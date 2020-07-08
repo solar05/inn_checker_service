@@ -9,6 +9,5 @@ defmodule InnCheckerService.Repo.Migrations.CreateInns do
 
       timestamps()
     end
-
   end
 end
