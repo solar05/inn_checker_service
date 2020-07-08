@@ -20,7 +20,7 @@ defmodule InnCheckerService.MixProject do
   def application do
     [
       mod: {InnCheckerService.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :formex]
     ]
   end
 
@@ -44,7 +44,12 @@ defmodule InnCheckerService.MixProject do
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:guardian, "~> 2.0"},
+      {:bodyguard, "~> 2.4"},
+      {:machinery, "~> 1.0.0"},
+      {:formex, "~> 0.6.0"},
+      {:formex_vex, "~> 0.1.0"}
     ]
   end
 
