@@ -1,0 +1,30 @@
+<h1>Listing Inns</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Client</th>
+      <th>State</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for inn <- @inns do %>
+    <tr>
+      <td><%= inn.number %></td>
+      <td><%= inn.client %></td>
+      <td><%= inn.state %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.inn_path(@conn, :show, inn) %></span>
+        <span><%= link "Edit", to: Routes.inn_path(@conn, :edit, inn) %></span>
+        <span><%= link "Delete", to: Routes.inn_path(@conn, :delete, inn), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Inn", to: Routes.inn_path(@conn, :new) %></span>
