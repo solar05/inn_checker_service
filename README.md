@@ -1,4 +1,8 @@
 # InnCheckerService
+![CI](https://github.com/solar05/inn_checker_service/workflows/CI/badge.svg)
+
+# Description
+A service, that validates your INN.
 
 To start your Phoenix server:
 
