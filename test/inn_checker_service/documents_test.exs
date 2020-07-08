@@ -6,13 +6,13 @@ defmodule InnCheckerService.DocumentsTest do
   describe "inns" do
     alias InnCheckerService.Documents.Inn
 
-    @valid_attrs %{client: "some client", number: "some number", state: "some state"}
+    @valid_attrs %{client: "some client", number: "732897853530", state: "some state"}
     @update_attrs %{
       client: "some updated client",
-      number: "some updated number",
+      number: "732897853530",
       state: "some updated state"
     }
-    @invalid_attrs %{client: nil, number: nil, state: nil}
+    @invalid_attrs %{client: nil, number: "732897853531", state: nil}
 
     def inn_fixture(attrs \\ %{}) do
       {:ok, inn} =
@@ -36,7 +36,7 @@ defmodule InnCheckerService.DocumentsTest do
     test "create_inn/1 with valid data creates a inn" do
       assert {:ok, %Inn{} = inn} = Documents.create_inn(@valid_attrs)
       assert inn.client == "some client"
-      assert inn.number == "some number"
+      assert inn.number == "732897853530"
       assert inn.state == "some state"
     end
 
@@ -48,7 +48,7 @@ defmodule InnCheckerService.DocumentsTest do
       inn = inn_fixture()
       assert {:ok, %Inn{} = inn} = Documents.update_inn(inn, @update_attrs)
       assert inn.client == "some updated client"
-      assert inn.number == "some updated number"
+      assert inn.number == "732897853530"
       assert inn.state == "some updated state"
     end
 
@@ -67,6 +67,18 @@ defmodule InnCheckerService.DocumentsTest do
     test "change_inn/1 returns a inn changeset" do
       inn = inn_fixture()
       assert %Ecto.Changeset{} = Documents.change_inn(inn)
+    end
+
+    test "valid_inn" do
+      assert Inn.is_control_sum_valid(@valid_attrs)
+    end
+
+    test "invalid_inn" do
+      assert Inn.is_control_sum_valid(@invalid_attrs) == false
+    end
+
+    test "invalid_inn_length" do
+      assert Inn.is_control_sum_valid(%{number: "73"}) == false
     end
   end
 end
