@@ -49,7 +49,8 @@ defmodule InnCheckerService.MixProject do
       {:bodyguard, "~> 2.4"},
       {:machinery, "~> 1.0.0"},
       {:formex, "~> 0.6.0"},
-      {:formex_vex, "~> 0.1.0"}
+      {:formex_vex, "~> 0.1.0"},
+      {:phoenix_pubsub_redis, "~> 3.0.0"}
     ]
   end
 
