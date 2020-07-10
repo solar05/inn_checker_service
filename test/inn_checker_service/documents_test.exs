@@ -3,16 +3,21 @@ defmodule InnCheckerService.DocumentsTest do
 
   alias InnCheckerService.Documents
 
+  @ten_digit_valid_inn "7743013901"
+  @ten_digit_invalid_inn "7743013902"
+  @twelwe_digit_valid_inn "732897853530"
+  @twelwe_digit_invalid_inn "732897853531"
+
   describe "inns" do
     alias InnCheckerService.Documents.Inn
 
-    @valid_attrs %{client: "some client", number: "732897853530", state: "some state"}
+    @valid_attrs %{client: "some client", number: @ten_digit_valid_inn, state: "some state"}
     @update_attrs %{
       client: "some updated client",
-      number: "732897853530",
+      number: @twelwe_digit_valid_inn,
       state: "some updated state"
     }
-    @invalid_attrs %{client: nil, number: "732897853531", state: nil}
+    @invalid_attrs %{client: nil, number: @ten_digit_invalid_inn, state: nil}
 
     def inn_fixture(attrs \\ %{}) do
       {:ok, inn} =
@@ -36,7 +41,7 @@ defmodule InnCheckerService.DocumentsTest do
     test "create_inn/1 with valid data creates a inn" do
       assert {:ok, %Inn{} = inn} = Documents.create_inn(@valid_attrs)
       assert inn.client == "some client"
-      assert inn.number == "732897853530"
+      assert inn.number == @ten_digit_valid_inn
       assert inn.state == "some state"
     end
 
@@ -48,7 +53,7 @@ defmodule InnCheckerService.DocumentsTest do
       inn = inn_fixture()
       assert {:ok, %Inn{} = inn} = Documents.update_inn(inn, @update_attrs)
       assert inn.client == "some updated client"
-      assert inn.number == "732897853530"
+      assert inn.number == @twelwe_digit_valid_inn
       assert inn.state == "some updated state"
     end
 
@@ -69,12 +74,20 @@ defmodule InnCheckerService.DocumentsTest do
       assert %Ecto.Changeset{} = Documents.change_inn(inn)
     end
 
-    test "valid_inn" do
+    test "ten_digit_valid_inn" do
       assert Inn.is_control_sum_valid(@valid_attrs)
     end
 
-    test "invalid_inn" do
+    test "ten_digit_invalid_inn" do
       assert Inn.is_control_sum_valid(@invalid_attrs) == false
+    end
+
+    test "twelwe_digit_valid_inn" do
+      assert Inn.is_control_sum_valid(%{number: @twelwe_digit_valid_inn})
+    end
+
+    test "twelwe_digit_invalid_inn" do
+      assert Inn.is_control_sum_valid(%{number: @twelwe_digit_invalid_inn}) == false
     end
 
     test "invalid_inn_length" do
