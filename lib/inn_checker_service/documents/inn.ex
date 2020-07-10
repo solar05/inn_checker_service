@@ -9,7 +9,7 @@ defmodule InnCheckerService.Documents.Inn do
   schema "inns" do
     field :client, :string
     field :number, :string
-    field :state, :string
+    field :state, :string, default: "created"
 
     timestamps()
   end
@@ -18,7 +18,26 @@ defmodule InnCheckerService.Documents.Inn do
   def changeset(inn, attrs) do
     inn
     |> cast(attrs, [:number, :client, :state])
-    |> validate_required([:number, :client, :state])
+    |> validate_inn
+  end
+
+  defp validate_inn(changeset) do
+    inn = get_field(changeset, :number)
+
+    if is_binary(inn) and is_inn_length_valid(inn) and is_inn_numeric(inn) do
+      changeset
+    else
+      add_error(changeset, :number, "Invalid inn format!")
+    end
+  end
+
+  def is_inn_length_valid(inn) do
+    inn_length = String.length(inn)
+    inn_length == 10 or inn_length == 12
+  end
+
+  def is_inn_numeric(inn) do
+    Regex.match?(~r(^[0-9]+$), inn)
   end
 
   def prepare_inn(number) do

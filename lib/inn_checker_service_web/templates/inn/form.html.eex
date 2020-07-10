@@ -8,11 +8,7 @@
   <%= label f, :number %>
   <%= text_input f, :number %>
   <%= error_tag f, :number %>
-
-  <%= label f, :client %>
-  <%= text_input f, :client %>
-  <%= error_tag f, :client %>
-
+  
   <%= label f, :state %>
   <%= text_input f, :state %>
   <%= error_tag f, :state %>

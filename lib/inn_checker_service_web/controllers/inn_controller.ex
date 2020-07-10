@@ -3,6 +3,8 @@ defmodule InnCheckerServiceWeb.InnController do
 
   alias InnCheckerService.Documents
   alias InnCheckerService.Documents.Inn
+  alias InnCheckerService.Fsm.InnStateMachine
+  alias InnCheckerServiceWeb.Services.IpService
 
   def index(conn, _params) do
     inns = Documents.list_inns()
@@ -15,6 +17,8 @@ defmodule InnCheckerServiceWeb.InnController do
   end
 
   def create(conn, %{"inn" => inn_params}) do
+    Map.put(inn_params, "client", IpService.extract_ip(conn))
+
     case Documents.create_inn(inn_params) do
       {:ok, inn} ->
         conn
@@ -28,6 +32,7 @@ defmodule InnCheckerServiceWeb.InnController do
 
   def show(conn, %{"id" => id}) do
     inn = Documents.get_inn!(id)
+    IO.inspect(Machinery.transition_to(inn, InnStateMachine, "created"))
     render(conn, "show.html", inn: inn)
   end
 
