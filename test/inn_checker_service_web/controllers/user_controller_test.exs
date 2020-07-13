@@ -23,8 +23,8 @@ defmodule InnCheckerServiceWeb.UserControllerTest do
   #    end
   #  end
 
-  #defp create_user(_) do
+  # defp create_user(_) do
   #  user = fixture(:user)
   #  %{user: user}
-  #end
+  # end
 end
