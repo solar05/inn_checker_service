@@ -40,6 +40,10 @@ defmodule InnCheckerService.DocumentsTest do
       assert inn.state == "some state"
     end
 
+    test "create_inn with valid data creates and check inn" do
+      assert {:ok, %Inn{} = inn} = Documents.create_inn(@valid_attrs)
+    end
+
     test "create_inn/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Documents.create_inn(@invalid_attrs)
     end

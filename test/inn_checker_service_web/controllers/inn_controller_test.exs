@@ -13,20 +13,6 @@ defmodule InnCheckerServiceWeb.InnControllerTest do
     inn
   end
 
-  describe "index" do
-    test "lists all inns", %{conn: conn} do
-      conn = get(conn, Routes.inn_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Inns"
-    end
-  end
-
-  describe "new inn" do
-    test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.inn_path(conn, :new))
-      assert html_response(conn, 200) =~ "New Inn"
-    end
-  end
-
   describe "delete inn" do
     setup [:create_inn]
 

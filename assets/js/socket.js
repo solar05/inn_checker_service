@@ -55,9 +55,94 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("topic:subtopic", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+document.addEventListener("DOMContentLoaded", function(event) {
+  const channel = socket.channel("inn:checks", {});
+  const innInput = document.querySelector("#chat-input");
+  const innContainer = document.querySelector("#inns");
+  const errorTag = document.getElementById("error-tag");
+  const innRegexp = /^[0-9]+$/;
+
+  innInput.addEventListener("keypress", event => {
+    if (event.key === 'Enter'){
+      if (isInnValid(innInput.value)) {
+        showInputError(false);
+        channel.push("new_inn", {body: innInput.value, client: window.client})
+        innInput.value = ""
+      } else {
+        showInputError(true);
+      }
+    }
+  })
+
+  const sendData = () => {
+    if (isInnValid(innInput.value)) {
+      showInputError(false);
+      channel.push("new_inn", {body: innInput.value, client: window.client})
+      innInput.value = ""
+    } else {
+        showInputError(true);
+    }
+  }
+
+  window.sendData = sendData;
+
+
+  channel.on("inn_added", payload => {
+    const innItem = document.createElement("td");
+    const stateItem = document.createElement("td");
+    stateItem.innerText = "отправлен";
+    stateItem.setAttribute("class", "text-primary");
+    const trElem = document.createElement("tr");
+    trElem.setAttribute("class", "col-md-10 m-2 h4");
+    trElem.setAttribute("id", payload.id);
+    stateItem.setAttribute("id", `state-${payload.id}`);
+    innItem.innerText = `[${payload.date}] ${payload.body}`;
+    trElem.prepend(innItem);
+    trElem.appendChild(stateItem);
+    innContainer.prepend(trElem);
+  })
+  
+  
+  channel.on("inn_error", payload => {
+    const innItem = document.createElement("td");
+    const stateItem = document.createElement("td");
+    stateItem.innerText = "некорректен";
+    stateItem.setAttribute("class", "text-primary");
+    const trElem = document.createElement("tr");
+    trElem.setAttribute("class", "col-md-10 m-2 h4");
+    trElem.setAttribute("id", payload.id);
+    stateItem.setAttribute("id", `state-${payload.id}`);
+    innItem.innerText = `[${payload.date}] ${payload.body}`;
+    trElem.prepend(innItem);
+    trElem.appendChild(stateItem);
+    innContainer.prepend(trElem);
+  })
+
+  channel.on("inn_correct", payload => {
+    const stateItem = document.getElementById(`state-${payload.id}`);
+    stateItem.setAttribute("class", "text-success");
+    stateItem.textContent = "корректен"
+  })
+
+  channel.on("inn_incorrect", payload => {
+    const stateItem = document.getElementById(`state-${payload.id}`);
+    stateItem.setAttribute("class", "text-danger");
+    stateItem.textContent = "некорректен"
+  })
+
+  channel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
+
+  const isInnValid = (inn) => {
+    const innLength = inn.length;
+    return (innLength == 10 || innLength == 12) && innRegexp.test(inn);
+  };
+
+  const showInputError = (state) => {
+      errorTag.hidden = !state;
+  }
+
+});
 
 export default socket

@@ -21,6 +21,10 @@ defmodule InnCheckerService.Documents do
     Repo.all(Inn)
   end
 
+  def last_50 do
+    Repo.all(from i in Inn, order_by: [desc: i.inserted_at], limit: 50)
+  end
+
   @doc """
   Gets a single inn.
 

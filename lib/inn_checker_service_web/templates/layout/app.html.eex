@@ -7,6 +7,13 @@
     <title>InnCheckerService · Phoenix Framework</title>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <script>window.userToken = "<%= assigns[:user_token] %>";</script>
+    <script>window.client = "<%= InnCheckerServiceWeb.Services.IpService.extract_ip(@conn) %>"</script>
   </head>
   <body>
     <header>
@@ -27,7 +34,31 @@
     <main role="main" class="container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-      <%= @inner_content %>
+      <h1 class="m-2">Введите ИНН</h1>
+      <div class="m-1">
+        <input class="col-md-10 m-2 h6" id="chat-input" type="text">
+        <button type="button" onclick="window.sendData()" class="m-2 btn btn-primary">Отправить</button>
+        <h2 id="error-tag" class="m-2 text-danger" hidden>Неправильный формат ИНН</h2>
+        <h2 id="ban-tag" class="m-2 text-danger" hidden>Вы превысили количество допустимых проверок, попробуйте позже</h2>
+      </div>
+      <br>
+      <table id="inns" role="log" aria-live="polite">
+      <%= for inn <- @inns do %>
+      <p><% inn.state %></p>
+        <tr class="col-md-10 m-2 h4">
+          <td><%=  Enum.join(["[" <> to_string(inn.inserted_at) <> "]", inn.number], " ") %></td>
+
+          <%= case inn.state do %>
+            <% "created" -> %>
+              <%= content_tag :td, "отправлен", [id: Enum.join(["state", inn.id], "-"), class: "text-primary"] %>
+            <% "correct" -> %>
+              <%= content_tag :td, "корректен", [id: Enum.join(["state", inn.id], "-"), class: "text-success"] %>
+            <% _ -> %>
+              <%= content_tag :td, "некорректен", [id: Enum.join(["state", inn.id], "-"), class: "text-danger"] %>
+          <% end %>
+        </tr>
+      <% end %>
+      </table>
     </main>
   </body>
 </html>

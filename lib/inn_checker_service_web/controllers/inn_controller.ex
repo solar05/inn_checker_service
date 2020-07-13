@@ -3,7 +3,6 @@ defmodule InnCheckerServiceWeb.InnController do
 
   alias InnCheckerService.Documents
   alias InnCheckerService.Documents.Inn
-  alias InnCheckerService.Fsm.InnStateMachine
   alias InnCheckerServiceWeb.Services.IpService
 
   def index(conn, _params) do
@@ -21,6 +20,7 @@ defmodule InnCheckerServiceWeb.InnController do
 
     case Documents.create_inn(inn_params) do
       {:ok, inn} ->
+        # Task.async(InnChecker, :check_inn, [inn, socket])
         conn
         |> put_flash(:info, "Inn created successfully.")
         |> redirect(to: Routes.inn_path(conn, :show, inn))
@@ -32,7 +32,6 @@ defmodule InnCheckerServiceWeb.InnController do
 
   def show(conn, %{"id" => id}) do
     inn = Documents.get_inn!(id)
-    IO.inspect(Machinery.transition_to(inn, InnStateMachine, "created"))
     render(conn, "show.html", inn: inn)
   end
 
