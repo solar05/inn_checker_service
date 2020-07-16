@@ -56,8 +56,8 @@ socket.connect()
 
 // Now that you are connected, you can join channels with a topic:
 document.addEventListener("DOMContentLoaded", function(event) {
-  const channel = socket.channel("inn:checks", {});
-  const innInput = document.querySelector("#chat-input");
+  const channel = socket.channel("inn:checks", {params: {token: window.userToken, client: window.client}});
+  const innInput = document.querySelector("#inn-input");
   const innContainer = document.querySelector("#inns");
   const errorTag = document.getElementById("error-tag");
   const innRegexp = /^[0-9]+$/;

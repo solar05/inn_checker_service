@@ -4,7 +4,8 @@ defmodule InnCheckerService.Repo.Migrations.CreateUsers do
   def change do
     create table(:users) do
       add :login, :string
-      add :password, :string
+      add :password, :string, virtual: true
+      add :encrypted_password, :string
       add :role, :string
 
       timestamps()

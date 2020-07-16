@@ -1,9 +1,11 @@
 defmodule InnCheckerServiceWeb.PageController do
   use InnCheckerServiceWeb, :controller
   alias InnCheckerService.Documents
+  alias InnCheckerServiceWeb.Services.IpService
 
+  @spec index(Plug.Conn.t(), any) :: Plug.Conn.t()
   def index(conn, _params) do
-    inns = Documents.last_50()
-    render(conn, "index.html", inns: inns)
+    conn
+    |> redirect(to: Routes.inn_path(conn, :index))
   end
 end

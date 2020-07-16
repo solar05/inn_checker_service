@@ -1,30 +1,26 @@
-<h1>Listing Inns</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Number</th>
-      <th>Client</th>
-      <th>State</th>
+<h1 class="m-2">Введите ИНН</h1>
+      <div class="m-1">
+        <input class="col-md-10 m-2 h6" id="inn-input" type="text">
+        <button type="button" onclick="window.sendData()" class="m-2 btn btn-primary">Отправить</button>
+        <h2 id="error-tag" class="m-2 text-danger" hidden>Неправильный формат ИНН</h2>
+        <h2 id="ban-tag" class="m-2 text-danger" hidden>Вы превысили количество допустимых проверок, попробуйте позже</h2>
+      </div>
+      <br>
+      <table id="inns" role="log" aria-live="polite">
+      <%= for inn <- @inns do %>
+      <p><% inn.state %></p>
+        <tr class="col-md-10 m-2 h4">
+          <td><%=  Enum.join(["[" <> to_string(inn.inserted_at) <> "]", inn.number], " ") %></td>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for inn <- @inns do %>
-    <tr>
-      <td><%= inn.number %></td>
-      <td><%= inn.client %></td>
-      <td><%= inn.state %></td>
-
-      <td>
-        <span><%= link "Show", to: Routes.inn_path(@conn, :show, inn) %></span>
-        <span><%= link "Edit", to: Routes.inn_path(@conn, :edit, inn) %></span>
-        <span><%= link "Delete", to: Routes.inn_path(@conn, :delete, inn), method: :delete, data: [confirm: "Are you sure?"] %></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
+          <%= case inn.state do %>
+            <% "created" -> %>
+              <%= content_tag :td, "отправлен", [id: Enum.join(["state", inn.id], "-"), class: "text-primary"] %>
+            <% "correct" -> %>
+              <%= content_tag :td, "корректен", [id: Enum.join(["state", inn.id], "-"), class: "text-success"] %>
+            <% _ -> %>
+              <%= content_tag :td, "некорректен", [id: Enum.join(["state", inn.id], "-"), class: "text-danger"] %>
+          <% end %>
+        </tr>
+      <% end %>
 </table>
-
-<span><%= link "New Inn", to: Routes.inn_path(@conn, :new) %></span>

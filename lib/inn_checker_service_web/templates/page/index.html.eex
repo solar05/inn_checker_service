@@ -1,38 +1,26 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-  <p>Peace-of-mind from prototype to production</p>
-</section>
 
-<section class="row">
-  <article class="column">
-    <h2>Resources</h2>
-    <ul>
-      <li>
-        <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix/blob/v1.5/CHANGELOG.md">v1.5 Changelog</a>
-      </li>
-    </ul>
-  </article>
-  <article class="column">
-    <h2>Help</h2>
-    <ul>
-      <li>
-        <a href="https://elixirforum.com/c/phoenix-forum">Forum</a>
-      </li>
-      <li>
-        <a href="https://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on Freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">Twitter @elixirphoenix</a>
-      </li>
-      <li>
-        <a href="https://elixir-slackin.herokuapp.com/">Elixir on Slack</a>
-      </li>
-    </ul>
-  </article>
-</section>
+<h1 class="m-2">Введите ИНН</h1>
+      <div class="m-1">
+        <input class="col-md-10 m-2 h6" id="inn-input" type="text">
+        <button type="button" onclick="window.sendData()" class="m-2 btn btn-primary">Отправить</button>
+        <h2 id="error-tag" class="m-2 text-danger" hidden>Неправильный формат ИНН</h2>
+        <h2 id="ban-tag" class="m-2 text-danger" hidden>Вы превысили количество допустимых проверок, попробуйте позже</h2>
+      </div>
+      <br>
+      <table id="inns" role="log" aria-live="polite">
+      <%= for inn <- @inns do %>
+      <p><% inn.state %></p>
+        <tr class="col-md-10 m-2 h4">
+          <td><%=  Enum.join(["[" <> to_string(inn.inserted_at) <> "]", inn.number], " ") %></td>
+
+          <%= case inn.state do %>
+            <% "created" -> %>
+              <%= content_tag :td, "отправлен", [id: Enum.join(["state", inn.id], "-"), class: "text-primary"] %>
+            <% "correct" -> %>
+              <%= content_tag :td, "корректен", [id: Enum.join(["state", inn.id], "-"), class: "text-success"] %>
+            <% _ -> %>
+              <%= content_tag :td, "некорректен", [id: Enum.join(["state", inn.id], "-"), class: "text-danger"] %>
+          <% end %>
+        </tr>
+      <% end %>
+</table>

@@ -4,9 +4,10 @@ defmodule InnCheckerServiceWeb.InnController do
   alias InnCheckerService.Documents
   alias InnCheckerService.Documents.Inn
   alias InnCheckerServiceWeb.Services.IpService
+  alias InnCheckerServiceWeb.Authentication
 
   def index(conn, _params) do
-    inns = Documents.list_inns()
+    inns = Documents.last_50()
     render(conn, "index.html", inns: inns)
   end
 
@@ -20,7 +21,6 @@ defmodule InnCheckerServiceWeb.InnController do
 
     case Documents.create_inn(inn_params) do
       {:ok, inn} ->
-        # Task.async(InnChecker, :check_inn, [inn, socket])
         conn
         |> put_flash(:info, "Inn created successfully.")
         |> redirect(to: Routes.inn_path(conn, :show, inn))
@@ -32,6 +32,7 @@ defmodule InnCheckerServiceWeb.InnController do
 
   def show(conn, %{"id" => id}) do
     inn = Documents.get_inn!(id)
+    # current_account = Authentication.get_current_account(conn)
     render(conn, "show.html", inn: inn)
   end
 

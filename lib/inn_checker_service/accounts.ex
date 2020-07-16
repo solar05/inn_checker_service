@@ -37,6 +37,10 @@ defmodule InnCheckerService.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_by_login(login) do
+    Repo.get_by(User, login: login)
+  end
+
   @doc """
   Creates a user.
 
@@ -98,7 +102,8 @@ defmodule InnCheckerService.Accounts do
       %Ecto.Changeset{data: %User{}}
 
   """
-  def change_user(%User{} = user, attrs \\ %{}) do
-    User.changeset(user, attrs)
+
+  def change_user(user \\ %User{}) do
+    User.changeset(user, %{})
   end
 end

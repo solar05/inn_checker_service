@@ -9,16 +9,37 @@ defmodule InnCheckerServiceWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :guardian do
+    plug InnCheckerServiceWeb.Authentication.Pipeline
+  end
+
+  pipeline :token do
+    plug InnCheckerServiceWeb.Plugs.TokensService
+  end
+
+  pipeline :browser_auth do
+    plug Guardian.Plug.EnsureAuthenticated
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/", InnCheckerServiceWeb do
-    pipe_through :browser
+    pipe_through [:browser, :token, :guardian]
 
     get "/", PageController, :index
-    # resources "/inns", InnController, except: [:update]
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
+    resources "/inns", InnController, only: [:index]
     # resources "/users", UserController
+    # resources "/profile", ProfileController, only: [:show], singleton: true
+  end
+
+  scope "/admin", InnCheckerServiceWeb do
+    pipe_through [:browser, :guardian, :browser_auth, :token]
+    delete "/logout", SessionController, :delete
+    resources "/inns", InnController, only: [:show]
   end
 
   # Other scopes may use custom stacks.

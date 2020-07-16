@@ -50,6 +50,7 @@ defmodule InnCheckerService.MixProject do
       {:machinery, "~> 1.0.0"},
       {:formex, "~> 0.6.0"},
       {:formex_vex, "~> 0.1.0"},
+      {:argon2_elixir, "~> 2.3"},
       {:phoenix_pubsub_redis, "~> 3.0.0"}
     ]
   end
@@ -65,7 +66,8 @@ defmodule InnCheckerService.MixProject do
       setup: ["deps.get", "ecto.setup", "cmd npm install --prefix assets"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      seed: ["run priv/repo/seeds.exs"]
     ]
   end
 end
