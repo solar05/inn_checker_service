@@ -3,9 +3,10 @@ defmodule InnCheckerServiceWeb.UserController do
 
   alias InnCheckerService.Accounts
   alias InnCheckerService.Accounts.User
+  alias InnCheckerService.Documents
 
   def index(conn, _params) do
-    users = Accounts.list_users()
+    users = Documents.clients()
     render(conn, "index.html", users: users)
   end
 

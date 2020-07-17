@@ -1,0 +1,39 @@
+<h2>ИНН  №<%= @inn.id %></h1>
+
+<ul class="list-group">
+    <%= if current_user(@conn) |> can?("ban_users") do %>
+        <li class="list-group-item">
+            <strong>Пользователь</strong>
+            <%= @inn.client %>
+            <%= link("Заблокировать  пользователя", to: "#", class: "btn btn-danger h1") %>
+        </li>
+    <% end %>
+
+    <li class="list-group-item">
+        <strong>Номер:</strong>
+        <%= @inn.number %>
+    </li>
+    <li class="list-group-item">
+            <%= case @inn.state do %>
+            <% "created" -> %>
+              <%= content_tag :label, "отправлен", class: "text-primary" %>
+            <% "correct" -> %>
+              <%= content_tag :label, "корректен", class: "text-success" %>
+            <% _ -> %>
+              <%= content_tag :label, "некорректен", class: "text-danger" %>
+            <% end %>
+    </li>
+    <li class="list-group-item"><strong>Дата отправки</strong>
+      <%=  to_string(Timex.shift(@inn.inserted_at, hours: 3)) %>
+    </li>
+    <li class="list-group-item"><strong>Дата проверки</strong>
+      <%=  to_string(Timex.shift(@inn.updated_at, hours: 3)) %>
+    </li>
+    <%= if current_user(@conn) |> can?("delete_inn") do %>
+        <li class="list-group-item">
+             <%= link("Удалить ИНН", to: Routes.inn_path(@conn, :delete, @inn), method: :delete, data: [confirm: "Удалить ИНН?"], class: "btn btn-danger h1") %>
+        </li>
+    <% end %>
+</ul>
+
+<span><%= link "Общий список", to: Routes.inn_path(@conn, :index) %></span>

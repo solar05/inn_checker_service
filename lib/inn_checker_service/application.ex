@@ -13,6 +13,7 @@ defmodule InnCheckerService.Application do
       InnCheckerServiceWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: InnCheckerService.PubSub},
+      {Redix, name: :redix},
       # Start the Endpoint (http/https)
       InnCheckerServiceWeb.Endpoint
       # Start a worker by calling: InnCheckerService.Worker.start_link(arg)

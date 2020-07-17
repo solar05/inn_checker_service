@@ -11,26 +11,13 @@
 # and so on) as they will fail if something goes wrong.
 
 defmodule InnCheckerService.DatabaseSeeder do
-  alias InnCheckerService.Repo
   alias InnCheckerService.Accounts
 
   # InnCheckerService.Accounts.create_user(%{login: "hey", password: "ho", role: "admin"})
 
-  @operator %{login: "ops", password: "56tYKP56aZ", role: "operator"}
-  @admin %{login: "adm", password: "3Egt5EPGSX8L", role: "admin"}
+  @operator %{login: "ops", password: "56tYKP56a", role: "operator"}
+  @admin %{login: "adm", password: "3Egt5EPGS", role: "admin"}
 
-  def run(_) do
-    Accounts.create_user(@str)
-    insert_users()
-  end
-
-  def insert_users do
-    Accounts.create_user(@operator)
-    Accounts.create_user(@admin)
-  end
-
-  def clear do
-    Repo.delete!(@operator)
-    Repo.delete!(@admin)
-  end
+  Accounts.create_user(@operator)
+  Accounts.create_user(@admin)
 end

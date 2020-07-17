@@ -21,8 +21,12 @@ defmodule InnCheckerService.Documents do
     Repo.all(Inn)
   end
 
-  def last_50 do
+  def last_100 do
     Repo.all(from i in Inn, order_by: [desc: i.inserted_at], limit: 50)
+  end
+
+  def clients do
+    Repo.all(from i in Inn, distinct: true, select: i.client, limit: 50)
   end
 
   @doc """

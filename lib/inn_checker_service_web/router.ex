@@ -26,20 +26,20 @@ defmodule InnCheckerServiceWeb.Router do
   end
 
   scope "/", InnCheckerServiceWeb do
-    pipe_through [:browser, :token, :guardian]
-
+    pipe_through [:browser, :guardian, :token]
     get "/", PageController, :index
     get "/login", SessionController, :new
     post "/login", SessionController, :create
-    resources "/inns", InnController, only: [:index]
+    resources "/inns", InnController, only: [:new]
     # resources "/users", UserController
     # resources "/profile", ProfileController, only: [:show], singleton: true
   end
 
   scope "/admin", InnCheckerServiceWeb do
-    pipe_through [:browser, :guardian, :browser_auth, :token]
+    pipe_through [:browser, :token, :guardian, :browser_auth]
+    resources "/users", UserController, only: [:index]
     delete "/logout", SessionController, :delete
-    resources "/inns", InnController, only: [:show]
+    resources "/inns", InnController, only: [:index, :show, :delete]
   end
 
   # Other scopes may use custom stacks.

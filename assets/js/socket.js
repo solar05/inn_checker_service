@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     if (event.key === 'Enter'){
       if (isInnValid(innInput.value)) {
         showInputError(false);
-        channel.push("new_inn", {body: innInput.value, client: window.client})
+        channel.push("new_inn", {body: innInput.value, client: window.client, token: window.userToken})
         innInput.value = ""
       } else {
         showInputError(true);
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const sendData = () => {
     if (isInnValid(innInput.value)) {
       showInputError(false);
-      channel.push("new_inn", {body: innInput.value, client: window.client})
+      channel.push("new_inn", {body: innInput.value, client: window.client, token: window.userToken})
       innInput.value = ""
     } else {
         showInputError(true);

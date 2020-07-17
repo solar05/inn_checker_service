@@ -4,7 +4,10 @@ defmodule InnCheckerServiceWeb.Authentication.ErrorHandler do
   @behaviour Guardian.Plug.ErrorHandler
 
   @impl Guardian.Plug.ErrorHandler
-  def auth_error(conn, {_type, _reason}, _opts) do
+  def auth_error(conn, {type, reason}, _opts) do
+    IO.inspect(type)
+    IO.inspect(reason)
+
     conn
     |> put_flash(:error, "Authentication error.")
     |> redirect(to: Routes.session_path(conn, :new))

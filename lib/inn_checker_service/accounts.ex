@@ -5,7 +5,6 @@ defmodule InnCheckerService.Accounts do
 
   import Ecto.Query, warn: false
   alias InnCheckerService.Repo
-
   alias InnCheckerService.Accounts.User
 
   @doc """

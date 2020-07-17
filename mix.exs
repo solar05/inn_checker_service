@@ -51,7 +51,9 @@ defmodule InnCheckerService.MixProject do
       {:formex, "~> 0.6.0"},
       {:formex_vex, "~> 0.1.0"},
       {:argon2_elixir, "~> 2.3"},
-      {:phoenix_pubsub_redis, "~> 3.0.0"}
+      {:redix, ">= 0.0.0"},
+      {:castore, ">= 0.0.0"},
+      {:timex, "~> 3.0"}
     ]
   end
 

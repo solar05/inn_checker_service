@@ -7,13 +7,16 @@ defmodule InnCheckerServiceWeb.InnController do
   alias InnCheckerServiceWeb.Authentication
 
   def index(conn, _params) do
-    inns = Documents.last_50()
+    inns = Documents.last_100()
+    IO.inspect(Authentication.logged?(conn))
+    IO.inspect(Authentication.current_user(conn))
     render(conn, "index.html", inns: inns)
   end
 
   def new(conn, _params) do
-    changeset = Documents.change_inn(%Inn{})
-    render(conn, "new.html", changeset: changeset)
+    inns = Documents.last_100()
+    IO.inspect(System.get_env("GUARDIAN_SECRET_KEY"))
+    render(conn, "new.html", inns: inns)
   end
 
   def create(conn, %{"inn" => inn_params}) do
@@ -58,10 +61,11 @@ defmodule InnCheckerServiceWeb.InnController do
 
   def delete(conn, %{"id" => id}) do
     inn = Documents.get_inn!(id)
+    IO.inspect(inn)
     {:ok, _inn} = Documents.delete_inn(inn)
 
     conn
-    |> put_flash(:info, "Inn deleted successfully.")
+    |> put_flash(:success, "ИНН успешно удален.")
     |> redirect(to: Routes.inn_path(conn, :index))
   end
 end

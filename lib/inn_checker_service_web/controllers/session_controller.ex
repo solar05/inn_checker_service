@@ -5,7 +5,7 @@ defmodule InnCheckerServiceWeb.SessionController do
   alias InnCheckerServiceWeb.Authentication
 
   def new(conn, _params) do
-    if Authentication.get_current_account(conn) do
+    if Authentication.current_user(conn) do
       redirect(conn, to: "/")
     else
       render(
@@ -15,6 +15,8 @@ defmodule InnCheckerServiceWeb.SessionController do
         action: Routes.session_path(conn, :create)
       )
     end
+
+    # render(conn, :new, changeset: conn, action: "/login")
   end
 
   def create(conn, %{"account" => %{"login" => login, "password" => password}}) do
@@ -22,7 +24,7 @@ defmodule InnCheckerServiceWeb.SessionController do
       {:ok, account} ->
         conn
         |> Authentication.log_in(account)
-        |> redirect(to: "/admin/inns/3")
+        |> redirect(to: Routes.inn_path(conn, :index))
 
       {:error, :invalid_credentials} ->
         conn

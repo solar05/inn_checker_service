@@ -2,8 +2,15 @@ defmodule InnCheckerService.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  # @operator_actions ["show_inn", "delete_inn"]
-  # @admin_actions ["show_inn", "delete_inn", "index_users", "ban_users", "unban_users"]
+  @operator_actions ["show_inn", "delete_inn", "index_inn"]
+  @admin_actions [
+    "show_inn",
+    "delete_inn",
+    "index_users",
+    "ban_users",
+    "unban_users",
+    "index_inn"
+  ]
 
   schema "users" do
     field :login, :string
@@ -11,7 +18,7 @@ defmodule InnCheckerService.Accounts.User do
     field :encrypted_password, :string
     field :role, :string
 
-    timestamps()
+    timestamps([:utc_datetime])
   end
 
   def changeset(user, attrs) do

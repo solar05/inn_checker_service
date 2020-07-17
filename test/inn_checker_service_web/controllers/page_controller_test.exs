@@ -3,6 +3,6 @@ defmodule InnCheckerServiceWeb.PageControllerTest do
 
   test "GET /", %{conn: conn} do
     conn = get(conn, "/")
-    assert conn.status == 200
+    assert conn.status == 302
   end
 end
