@@ -1,12 +1,16 @@
 # InnCheckerService
 ![CI](https://github.com/solar05/inn_checker_service/workflows/CI/badge.svg)
-![Heroku](https://inn-checker.herokuapp.com)
+
+[Heroku link](https://inn-checker.herokuapp.com)
 
 
 # Commands
 To run priject: make run
+
 To run test use: make tests
+
 To run linter: make format-check
+
 To run linter fixes: make format
 
 # Description
