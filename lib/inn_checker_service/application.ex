@@ -14,6 +14,7 @@ defmodule InnCheckerService.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: InnCheckerService.PubSub},
       {Redix, name: :redix},
+      {InnCheckerServiceWeb.Services.BanServer, name: :ban_server},
       # Start the Endpoint (http/https)
       InnCheckerServiceWeb.Endpoint
       # Start a worker by calling: InnCheckerService.Worker.start_link(arg)

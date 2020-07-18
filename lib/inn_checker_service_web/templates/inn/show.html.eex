@@ -5,7 +5,16 @@
         <li class="list-group-item">
             <strong>Пользователь</strong>
             <%= @inn.client %>
-            <%= link("Заблокировать  пользователя", to: "#", class: "btn btn-danger h1") %>
+        </li>
+        <li class="list-group-item">
+        <%= form_for @conn, Routes.user_path(@conn, :delete, @inn.client), [class: "form-row align-items-center"], fn f -> %>
+            <div class="col-sm-3 my-1">
+              <%= text_input f, :minutes, [class: "form-control", placeholder: "Количество минут"] %>
+              <div class="col-auto my-1">
+                <%= submit "Заблокировать  пользователя", class: "btn btn-danger" %>
+              </div>
+            </div>
+          <% end %>
         </li>
     <% end %>
 
@@ -14,14 +23,15 @@
         <%= @inn.number %>
     </li>
     <li class="list-group-item">
-            <%= case @inn.state do %>
-            <% "created" -> %>
-              <%= content_tag :label, "отправлен", class: "text-primary" %>
-            <% "correct" -> %>
-              <%= content_tag :label, "корректен", class: "text-success" %>
-            <% _ -> %>
-              <%= content_tag :label, "некорректен", class: "text-danger" %>
-            <% end %>
+      <strong>Статус проверки: </strong>
+        <%= case @inn.state do %>
+          <% "created" -> %>
+            <%= content_tag :label, "отправлен", class: "text-primary" %>
+          <% "correct" -> %>
+            <%= content_tag :label, "корректен", class: "text-success" %>
+          <% _ -> %>
+            <%= content_tag :label, "некорректен", class: "text-danger" %>
+        <% end %>
     </li>
     <li class="list-group-item"><strong>Дата отправки</strong>
       <%=  to_string(Timex.shift(@inn.inserted_at, hours: 3)) %>
@@ -35,5 +45,3 @@
         </li>
     <% end %>
 </ul>
-
-<span><%= link "Общий список", to: Routes.inn_path(@conn, :index) %></span>

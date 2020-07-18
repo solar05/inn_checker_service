@@ -30,6 +30,13 @@ config :inn_checker_service, InnCheckerServiceWeb.Endpoint,
   ],
   secret_key_base: secret_key_base
 
+
+config :redix, Redix,
+  host: System.get_env("REDIS_URL"),
+  port: String.to_integer(System.get_env("REDIS_PORT") || "6379"),
+  password: System.get_env("REDIS_PASSWORD"),
+  name: System.get_env("REDIS_USERNAME")
+
 # ## Using releases (Elixir v1.9+)
 #
 # If you are doing OTP releases, you need to instruct Phoenix

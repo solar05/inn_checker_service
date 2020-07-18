@@ -37,6 +37,8 @@ defmodule InnCheckerServiceWeb.Router do
 
   scope "/admin", InnCheckerServiceWeb do
     pipe_through [:browser, :token, :guardian, :browser_auth]
+    get "/users/:client", UserController, :create
+    post "/users/:client", UserController, :delete
     resources "/users", UserController, only: [:index]
     delete "/logout", SessionController, :delete
     resources "/inns", InnController, only: [:index, :show, :delete]
