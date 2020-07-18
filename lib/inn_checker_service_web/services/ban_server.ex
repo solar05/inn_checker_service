@@ -11,7 +11,7 @@ defmodule InnCheckerServiceWeb.Services.BanServer do
   end
 
   def handle_info(:check_timeout, state) do
-    IO.inspect(Redix.command(:redix, ["PING"]))
+    #IO.inspect(Redix.command(:redix, ["PING"]))
     check_timeout()
     {:noreply, state}
   end

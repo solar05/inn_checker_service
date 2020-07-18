@@ -30,7 +30,6 @@ config :inn_checker_service, InnCheckerServiceWeb.Endpoint,
   ],
   secret_key_base: secret_key_base
 
-
 config :redix, Redix,
   host: System.get_env("REDIS_URL"),
   port: String.to_integer(System.get_env("REDIS_PORT") || "6379"),
