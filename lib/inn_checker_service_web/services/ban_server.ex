@@ -11,14 +11,14 @@ defmodule InnCheckerServiceWeb.Services.BanServer do
   end
 
   def handle_info(:check_timeout, state) do
-    #IO.inspect(Redix.command(:redix, ["PING"]))
+    # IO.inspect(Redix.command(:redix, ["PING"]))
     check_timeout()
     {:noreply, state}
   end
 
   defp check_timeout do
     # 60 * 60 * 1000)
-    Process.send_after(self(), :check_timeout, 10000)
+    Process.send_after(self(), :check_timeout, 1000)
   end
 
   def handle_call({:ban_user, info}, _from, state) do

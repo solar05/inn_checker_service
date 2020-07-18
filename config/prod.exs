@@ -18,6 +18,12 @@ config :inn_checker_service, InnCheckerServiceWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+config :redix, Redix,
+  host: System.get_env("REDIS_URL"),
+  port: String.to_integer(System.get_env("REDIS_PORT") || "6379"),
+  password: System.get_env("REDIS_PASSWORD"),
+  name: System.get_env("REDIS_USERNAME")
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
