@@ -58,8 +58,10 @@ socket.connect()
 document.addEventListener("DOMContentLoaded", function(event) {
   const channel = socket.channel("inn:checks", {params: {token: window.userToken, client: window.client}});
   const innInput = document.querySelector("#inn-input");
+  const sendButton = document.getElementById("inn-button");
   const innContainer = document.querySelector("#inns");
   const errorTag = document.getElementById("error-tag");
+  const banTag = document.getElementById("ban-tag");
   const innRegexp = /^[0-9]+$/;
 
   innInput.addEventListener("keypress", event => {
@@ -130,6 +132,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     stateItem.textContent = "некорректен"
   })
 
+  channel.on("user_banned", payload => {
+    showBanTag(true);
+    innInput.setAttribute("disabled", "true");
+    sendButton.setAttribute("disabled", "true");
+    innInput.removeEventListener("keypress");
+  })
+
   channel.join()
     .receive("ok", resp => { console.log("Joined successfully", resp) })
     .receive("error", resp => { console.log("Unable to join", resp) })
@@ -141,6 +150,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   const showInputError = (state) => {
       errorTag.hidden = !state;
+  }
+
+  const showBanTag = (state) => {
+    banTag.hidden = !state;
   }
 
 });

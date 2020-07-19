@@ -2,7 +2,7 @@
 <h1 class="m-2">Введите ИНН</h1>
       <div class="m-1">
         <input class="col-md-10 m-2 h6" id="inn-input" type="text">
-        <button type="button" onclick="window.sendData()" class="m-2 btn btn-primary">Отправить</button>
+        <button id="inn-button" type="button" onclick="window.sendData()" class="m-2 btn btn-primary">Отправить</button>
         <h2 id="error-tag" class="m-2 text-danger" hidden>Неправильный формат ИНН</h2>
         <h2 id="ban-tag" class="m-2 text-danger" hidden>Вы превысили количество допустимых проверок, попробуйте позже</h2>
       </div>

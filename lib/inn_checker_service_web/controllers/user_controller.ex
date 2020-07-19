@@ -61,12 +61,15 @@ defmodule InnCheckerServiceWeb.UserController do
   end
 
   def delete(conn, %{"client" => client, "minutes" => minutes}) do
-    case GenServer.call(:ban_server, {:ban_user, %{client: client, minutes: minutes}}) do
+    case GenServer.call(:ban_server, {:ban_user, %{client: client, minutes: String.to_integer(minutes)}}) do
       :ok ->
         conn
         |> put_flash(:success, "Пользователь успешно заблокирован!")
         |> redirect(to: Routes.user_path(conn, :index))
-
+      :banned ->
+        conn
+        |> put_flash(:info, "Пользователь был заблокирован ранее!")
+        |> redirect(to: Routes.user_path(conn, :index))
       _ ->
         conn
         |> put_flash(:error, "Произошла ошибка!")

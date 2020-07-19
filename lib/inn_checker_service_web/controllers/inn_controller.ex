@@ -20,6 +20,7 @@ defmodule InnCheckerServiceWeb.InnController do
   end
 
   def create(conn, %{"inn" => inn_params}) do
+    IO.inspect(inn_params)
     Map.put(inn_params, "client", IpService.extract_ip(conn))
 
     case Documents.create_inn(inn_params) do
