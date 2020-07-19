@@ -7,13 +7,9 @@
             <%= @inn.client %>
         </li>
         <li class="list-group-item">
-        <%= form_for @conn, Routes.user_path(@conn, :delete, @inn.client), [class: "form-row align-items-center"], fn f -> %>
-            <div class="col-sm-3 my-1">
-              <%= text_input f, :minutes, [class: "form-control", placeholder: "Количество минут"] %>
-              <div class="col-auto my-1">
-                <%= submit "Заблокировать  пользователя", class: "btn btn-danger" %>
-              </div>
-            </div>
+        <%= form_for @conn, Routes.user_path(@conn, :delete, @inn.client), [class: "form-inline m-1"], fn f -> %>
+              <%= text_input f, :minutes, [class: "form-control m-1", placeholder: "Количество минут", id: "timeout-input"] %>
+                <%= submit "Заблокировать  пользователя", [class: "btn btn-danger m-1", id: "timeout-button"] %>
           <% end %>
         </li>
     <% end %>
@@ -45,3 +41,16 @@
         </li>
     <% end %>
 </ul>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    const timeoutInput = document.getElementById("timeout-input");
+    const timeoutButton = document.getElementById("timeout-button");
+    timeoutButton.disabled = true;
+    const validateForm = () => {
+      const timeoutValue = timeoutInput.value;
+      timeoutValue === "" ? (timeoutButton.disabled = true) : (timeoutButton.disabled = false);
+    }
+    timeoutInput.addEventListener('change', validateForm);
+  });
+</script>

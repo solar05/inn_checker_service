@@ -7,73 +7,43 @@ defmodule InnCheckerServiceWeb.UserController do
   alias InnCheckerServiceWeb.Services.BanServer
 
   def index(conn, _params) do
-    users = Documents.clients()
-    render(conn, "index.html", users: users)
-  end
-
-  def new(conn, _params) do
-    changeset = Accounts.change_user(%User{})
-    render(conn, "new.html", changeset: changeset)
+    ban_list = GenServer.call(:ban_server, {:ban_list, %{}})
+    render(conn, "index.html", users: ban_list)
   end
 
   def create(conn, %{"client" => client}) do
-    IO.inspect(client)
+    GenServer.call(:ban_server, {:unban, %{client: client}})
 
     conn
     |> put_flash(:success, "Пользователь успешно разблокирован!")
     |> redirect(to: Routes.user_path(conn, :index))
-
-    # case Accounts.create_user(user_params) do
-    # {:ok, user} ->
-    #   conn
-    #   |> put_flash(:info, "User created successfully.")
-    #   |> redirect(to: Routes.user_path(conn, :show, user))
-
-    #  {:error, %Ecto.Changeset{} = changeset} ->
-    #    render(conn, "new.html", changeset: changeset)
-    # end
-  end
-
-  def show(conn, %{"id" => id}) do
-    user = Accounts.get_user!(id)
-    render(conn, "show.html", user: user)
-  end
-
-  @spec edit(Plug.Conn.t(), map) :: Plug.Conn.t()
-  def edit(conn, %{"id" => id}) do
-    user = Accounts.get_user!(id)
-    changeset = Accounts.change_user(user)
-    render(conn, "edit.html", user: user, changeset: changeset)
-  end
-
-  def update(conn, %{"id" => id, "user" => user_params}) do
-    user = Accounts.get_user!(id)
-
-    case Accounts.update_user(user, user_params) do
-      {:ok, user} ->
-        conn
-        |> put_flash(:info, "User updated successfully.")
-        |> redirect(to: Routes.user_path(conn, :show, user))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", user: user, changeset: changeset)
-    end
   end
 
   def delete(conn, %{"client" => client, "minutes" => minutes}) do
-    case GenServer.call(:ban_server, {:ban_user, %{client: client, minutes: String.to_integer(minutes)}}) do
-      :ok ->
-        conn
-        |> put_flash(:success, "Пользователь успешно заблокирован!")
-        |> redirect(to: Routes.user_path(conn, :index))
-      :banned ->
-        conn
-        |> put_flash(:info, "Пользователь был заблокирован ранее!")
-        |> redirect(to: Routes.user_path(conn, :index))
-      _ ->
-        conn
-        |> put_flash(:error, "Произошла ошибка!")
-        |> redirect(to: Routes.user_path(conn, :index))
+    if minutes != "" and Regex.match?(~r(^[0-9]+$), minutes) do
+      case GenServer.call(
+             :ban_server,
+             {:ban_user, %{client: client, minutes: String.to_integer(minutes)}}
+           ) do
+        :ok ->
+          conn
+          |> put_flash(:success, "Пользователь успешно заблокирован!")
+          |> redirect(to: Routes.user_path(conn, :index))
+
+        :banned ->
+          conn
+          |> put_flash(:info, "Пользователь был заблокирован ранее!")
+          |> redirect(to: Routes.user_path(conn, :index))
+
+        _ ->
+          conn
+          |> put_flash(:error, "Произошла ошибка!")
+          |> redirect(to: Routes.user_path(conn, :index))
+      end
+    else
+      conn
+      |> put_flash(:error, "Произошла ошибка!")
+      |> redirect(to: Routes.user_path(conn, :index))
     end
   end
 end

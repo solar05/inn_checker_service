@@ -4,17 +4,16 @@
   <thead>
     <tr>
       <th>Пользователь</th>
-      <th>Времени до истечения блокировки</th>
+      <th>Минут до истечения блокировки</th>
       <th>Отменить блокировку</th>
-
       <th></th>
     </tr>
   </thead>
   <tbody>
-<%= for client <- @users do %>
+<%= for {client, timeout} <- @users do %>
     <tr>
       <td><%= client %></td>
-      <td>00:00</td>
+      <td><%= timeout %></td>
       <td>
       <%= link("Разблокировать", to: Routes.user_path(@conn, :create, client), method: :get, data: [confirm: "Разблокировать пользователя?"], class: "btn btn-danger h1") %>
     </tr>

@@ -15,8 +15,6 @@ defmodule InnCheckerServiceWeb.SessionController do
         action: Routes.session_path(conn, :create)
       )
     end
-
-    # render(conn, :new, changeset: conn, action: "/login")
   end
 
   def create(conn, %{"account" => %{"login" => login, "password" => password}}) do
