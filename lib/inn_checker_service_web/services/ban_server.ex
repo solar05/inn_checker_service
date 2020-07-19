@@ -31,7 +31,7 @@ defmodule InnCheckerServiceWeb.Services.BanServer do
   end
 
   defp check_timeout do
-    Process.send_after(self(), :check_timeout, 1000)
+    Process.send_after(self(), :check_timeout, 60 * 1000)
   end
 
   def handle_call({:ban_user, %{client: client, minutes: time}}, _from, ban_list) do
