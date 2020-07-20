@@ -31,8 +31,6 @@ defmodule InnCheckerServiceWeb.Router do
     get "/login", SessionController, :new
     post "/login", SessionController, :create
     resources "/inns", InnController, only: [:new]
-    # resources "/users", UserController
-    # resources "/profile", ProfileController, only: [:show], singleton: true
   end
 
   scope "/admin", InnCheckerServiceWeb do

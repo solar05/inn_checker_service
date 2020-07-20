@@ -35,6 +35,10 @@ defmodule InnCheckerServiceWeb.Endpoint do
     plug Phoenix.Ecto.CheckRepoStatus, otp_app: :inn_checker_service
   end
 
+  if Application.get_env(:your_app, :sql_sandbox) do
+    plug Phoenix.Ecto.SQL.Sandbox
+  end
+
   plug Phoenix.LiveDashboard.RequestLogger,
     param_key: "request_logger",
     cookie_key: "request_logger"

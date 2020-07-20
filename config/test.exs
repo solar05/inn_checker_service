@@ -20,3 +20,9 @@ config :inn_checker_service, InnCheckerServiceWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+config :inn_checker_service, InnCheckerServiceWeb.Endpoint, server: true
+
+config :wallaby, driver: Wallaby.Chrome, js_errors: false
+
+config :inn_checker_service, :sql_sandbox, true

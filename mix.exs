@@ -53,7 +53,8 @@ defmodule InnCheckerService.MixProject do
       {:argon2_elixir, "~> 2.3"},
       {:redix, ">= 0.0.0"},
       {:castore, ">= 0.0.0"},
-      {:timex, "~> 3.0"}
+      {:timex, "~> 3.0"},
+      {:wallaby, "~> 0.26.0", runtime: false, only: :test}
     ]
   end
 
