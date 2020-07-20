@@ -18,6 +18,11 @@ defmodule InnCheckerService.DatabaseSeeder do
   @operator %{login: "ops", password: "56tYKP56a", role: "operator"}
   @admin %{login: "adm", password: "3Egt5EPGS", role: "admin"}
 
-  Accounts.create_user(@operator)
-  Accounts.create_user(@admin)
+  if !Accounts.get_by_login("adm") do
+    Accounts.create_user(@admin)
+  end
+
+  if !Accounts.get_by_login("ops") do
+    Accounts.create_user(@operator)
+  end
 end

@@ -26,7 +26,7 @@ defmodule InnCheckerServiceWeb.SessionController do
 
       {:error, :invalid_credentials} ->
         conn
-        |> put_flash(:error, "Incorrect login or password")
+        |> put_flash(:error, "Некорректный логин или пароль!")
         |> new(%{})
     end
   end

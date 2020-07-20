@@ -11,6 +11,11 @@ defmodule InnCheckerServiceWeb.UserControllerTest do
   }
   @invalid_attrs %{login: nil, password: nil, role: nil}
 
+  @admin_login "adm"
+  @admin_role "admin"
+  @ops_login "ops"
+  @ops_role "operator"
+
   def fixture(:user) do
     {:ok, user} = Accounts.create_user(@create_attrs)
     user
