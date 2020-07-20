@@ -5,20 +5,33 @@
 
 
 # Commands
-To run priject: make run
+To setup project:
+```bash
+$ mix deps.get
+$ mix compile
+$ mix ecto.setup
+```
 
-To run test use: make tests
+To run project: 
+```bash
+$ make run
+```
+and after that visit [`localhost:4000`](http://localhost:4000)
 
-To run linter: make format-check
+To run test use: 
+```bash
+$ make tests
+```
 
-To run linter fixes: make format
+To run linter-check: 
+```bash
+$ make format-check
+```
+To run linter fixes:
+```bash
+$ make format
+```
 
 # Description
 A service, that validates your INN.
-
-To start your Phoenix server:
-
-  * Setup the project with `mix setup`
-  * Start Phoenix endpoint with `mix phx.server`
-
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Creditionals locates at priv/repo/seeds.exs
