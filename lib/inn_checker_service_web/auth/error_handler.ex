@@ -9,7 +9,7 @@ defmodule InnCheckerServiceWeb.Authentication.ErrorHandler do
     IO.inspect(reason)
 
     conn
-    |> put_flash(:error, "Authentication error.")
+    |> put_flash(:error, "Ошибка аутентификации.")
     |> redirect(to: Routes.session_path(conn, :new))
   end
 end

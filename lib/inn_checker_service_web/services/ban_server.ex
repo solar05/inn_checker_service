@@ -1,8 +1,8 @@
 defmodule InnCheckerServiceWeb.Services.BanServer do
   use GenServer
 
-  def start_link(opts) do
-    GenServer.start_link(__MODULE__, [], opts)
+  def start_link(ban_list \\ MapSet.new([]), opts) do
+    GenServer.start_link(__MODULE__, ban_list, opts)
   end
 
   def init(_) do
