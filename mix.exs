@@ -54,7 +54,8 @@ defmodule InnCheckerService.MixProject do
       {:redix, ">= 0.0.0"},
       {:castore, ">= 0.0.0"},
       {:timex, "~> 3.0"},
-      {:wallaby, "~> 0.26.0", runtime: false, only: :test}
+      {:wallaby, "~> 0.26.0", runtime: false, only: :test},
+      {:scrivener_ecto, "~> 2.0"}
     ]
   end
 

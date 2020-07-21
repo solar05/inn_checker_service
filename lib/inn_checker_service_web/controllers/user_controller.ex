@@ -1,11 +1,6 @@
 defmodule InnCheckerServiceWeb.UserController do
   use InnCheckerServiceWeb, :controller
 
-  alias InnCheckerService.Accounts
-  alias InnCheckerService.Accounts.User
-  alias InnCheckerService.Documents
-  alias InnCheckerServiceWeb.Services.BanServer
-
   def index(conn, _params) do
     ban_list = GenServer.call(:ban_server, {:ban_list, %{}})
     render(conn, "index.html", users: ban_list)

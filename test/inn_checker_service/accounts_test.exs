@@ -12,7 +12,7 @@ defmodule InnCheckerService.AccountsTest do
     @ops_login "ops"
     @ops_role "operator"
 
-    def user_fixture(attrs \\ %{}) do
+    def user_fixture() do
       {:ok, user} = Accounts.create_user(@valid_attrs)
       user
     end

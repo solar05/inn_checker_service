@@ -1,19 +1,27 @@
 defmodule InnCheckerServiceWeb.InnController do
   use InnCheckerServiceWeb, :controller
-
+  import Ecto.Query, warn: false
   alias InnCheckerService.Documents
   alias InnCheckerService.Documents.Inn
   alias InnCheckerServiceWeb.Services.IpService
-  alias InnCheckerServiceWeb.Authentication
+  alias InnCheckerService.Repo
 
-  def index(conn, _params) do
-    inns = Documents.last_100()
-    render(conn, "index.html", inns: inns)
+  def index(conn, params) do
+    page =
+      Inn
+      |> order_by(desc: :inserted_at)
+      |> Repo.paginate(params)
+
+    render(conn, "index.html", inns: page.entries, page: page)
   end
 
-  def new(conn, _params) do
-    inns = Documents.last_100()
-    render(conn, "new.html", inns: inns)
+  def new(conn, params) do
+    page =
+      Inn
+      |> order_by(desc: :inserted_at)
+      |> Repo.paginate(params)
+
+    render(conn, "new.html", inns: page.entries, page: page)
   end
 
   def create(conn, %{"inn" => inn_params}) do

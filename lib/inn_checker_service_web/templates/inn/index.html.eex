@@ -25,3 +25,11 @@
         </tr>
       <% end %>
 </table>
+<ul class="pagination">
+  <li class="page-item">
+    <%= link "Назад", to: Routes.inn_path(@conn, :index, page: @page.page_number - 1), class: "page-link" %>
+  </li>
+  <li class="page-item">
+    <%= link "Вперед", to: Routes.inn_path(@conn, :index, page: @page.page_number + 1), class: "page-link" %>
+  </li>
+</ul>
