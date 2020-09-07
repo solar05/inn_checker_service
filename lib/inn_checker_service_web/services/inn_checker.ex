@@ -12,4 +12,12 @@ defmodule InnCheckerServiceWeb.Services.InnChecker do
       Endpoint.broadcast!("inn:checks", "inn_incorrect", %{id: inn.id})
     end
   end
+
+  def check_inn_api(inn) do
+    if Documents.Inn.is_control_sum_valid(inn) do
+      InnStateMachine.persist(inn, "correct")
+    else
+      InnStateMachine.persist(inn, "incorrect")
+    end
+  end
 end

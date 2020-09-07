@@ -25,6 +25,11 @@ defmodule InnCheckerServiceWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/api", InnCheckerServiceWeb.Api, as: :api do
+    pipe_through :api
+    resources "/inns", InnController, only: [:show, :create]
+  end
+
   scope "/", InnCheckerServiceWeb do
     pipe_through [:browser, :guardian, :token]
     get "/", PageController, :index

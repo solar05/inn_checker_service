@@ -1,6 +1,7 @@
 defmodule InnCheckerService.Documents.Inn do
   use Ecto.Schema
   import Ecto.Changeset
+  @derive {Jason.Encoder, only: [:id, :number]}
 
   @ten_digits_map [2, 4, 10, 3, 5, 9, 4, 6, 8]
   @twelwe_digits_first_map [7, 2, 4, 10, 3, 5, 9, 4, 6, 8]
