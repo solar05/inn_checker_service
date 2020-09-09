@@ -63,11 +63,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const errorTag = document.getElementById("error-tag");
   const banTag = document.getElementById("ban-tag");
   const innRegexp = /^[0-9]+$/;
+  var sendTime, recieveTime, checkTime;
 
   innInput.addEventListener("keypress", event => {
     if (event.key === 'Enter'){
       if (isInnValid(innInput.value)) {
         showInputError(false);
+        sendTime = new Date().getTime();
         channel.push("new_inn", {body: innInput.value, client: window.client, token: window.userToken})
         innInput.value = ""
       } else {
@@ -79,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const sendData = () => {
     if (isInnValid(innInput.value)) {
       showInputError(false);
+      sendTime = new Date().getTime();
       channel.push("new_inn", {body: innInput.value, client: window.client, token: window.userToken})
       innInput.value = ""
     } else {
@@ -90,6 +93,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
   channel.on("inn_added", payload => {
+    recieveTime = new Date().getTime();
+    caclAndDisplayTimeAfterSend();
     const innItem = document.createElement("td");
     const stateItem = document.createElement("td");
     stateItem.innerText = "отправлен";
@@ -121,12 +126,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
   })
 
   channel.on("inn_correct", payload => {
+    checkTime = new Date().getTime();
+    caclAndDisplayTimeOfCheck();
     const stateItem = document.getElementById(`state-${payload.id}`);
     stateItem.setAttribute("class", "text-success");
     stateItem.textContent = "корректен"
   })
 
   channel.on("inn_incorrect", payload => {
+    checkTime = new Date().getTime();
+    caclAndDisplayTimeOfCheck();
     const stateItem = document.getElementById(`state-${payload.id}`);
     stateItem.setAttribute("class", "text-danger");
     stateItem.textContent = "некорректен"
@@ -154,6 +163,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   const showBanTag = (state) => {
     banTag.hidden = !state;
+  }
+
+  const caclAndDisplayTimeAfterSend = () =>
+  {
+    const diff = recieveTime - sendTime; 
+    console.log(`Отправка документа на проверку заняла ${diff} мсек.`);
+  }
+
+  const caclAndDisplayTimeOfCheck = () =>
+  {
+    const diff = checkTime - recieveTime; 
+    console.log(`Проверка документа и возврат результата заняло ${diff} мсек.`);
   }
 
 });

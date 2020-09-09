@@ -33,6 +33,7 @@ defmodule InnCheckerServiceWeb.Router do
   scope "/", InnCheckerServiceWeb do
     pipe_through [:browser, :guardian, :token]
     get "/", PageController, :index
+    get "/about", PageController, :about
     get "/login", SessionController, :new
     post "/login", SessionController, :create
     resources "/inns", InnController, only: [:new]

@@ -6,4 +6,9 @@ defmodule InnCheckerServiceWeb.PageController do
     conn
     |> redirect(to: Routes.inn_path(conn, :new))
   end
+
+  def about(conn, _params) do
+    conn
+    |> redirect(to: Routes.inn_path(conn, :new))
+  end
 end
