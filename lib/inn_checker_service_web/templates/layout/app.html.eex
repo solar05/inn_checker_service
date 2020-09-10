@@ -4,7 +4,21 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>InnCheckerService</title>
+    <title>Document Cheker</title>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(67226479, "init", {
+          clickmap:true,
+         trackLinks:true,
+         accurateTrackBounce:true
+         });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/67226479" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -18,7 +32,7 @@
     <header>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <ul class="navbar-nav mr-auto">
-                  <%= link("Проверка ИНН", to: Routes.inn_path(@conn, :new), class: "navbar-brand navbar-text text-dark h1") %>
+                  <%= link("Проверка документов", to: Routes.inn_path(@conn, :new), class: "navbar-brand navbar-text text-dark h1") %>
                   <%= if logged?(@conn) do %>
                       <%= if current_user(@conn) |> can?("index_users") do %>
                         <li class="nav-item">
@@ -27,7 +41,7 @@
                       <% end %>
                       <%= if current_user(@conn) |> can?("index_inn") do %>
                         <li class="nav-item">
-                          <%= link("Все ИНН", to: Routes.inn_path(@conn, :index), class: "navbar-brand navbar-text text-dark h1") %>
+                          <%= link("Все документы", to: Routes.inn_path(@conn, :index), class: "navbar-brand navbar-text text-dark h1") %>
                         </li>
                       <% end %>
                     <% end %>
@@ -53,9 +67,9 @@
             </nav>
     </header>
     <main role="main" class="container">
-      <p class="alert alert-success" role="alert"><%= get_flash(@conn, :success) %></p>
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <p class="alert alert-success h3" role="alert"><%= get_flash(@conn, :success) %></p>
+      <p class="alert alert-info h" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p class="alert alert-danger h3" role="alert"><%= get_flash(@conn, :error) %></p>
       <%= @inner_content %>
     </main>
   </body>
