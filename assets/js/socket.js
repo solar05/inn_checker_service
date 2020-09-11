@@ -145,7 +145,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     showBanTag(true);
     innInput.setAttribute("disabled", "true");
     sendButton.setAttribute("disabled", "true");
-    innInput.removeEventListener("keypress");
   })
 
   channel.join()
