@@ -27,7 +27,7 @@ defmodule InnCheckerServiceWeb.Router do
 
   scope "/api", InnCheckerServiceWeb.Api, as: :api do
     pipe_through :api
-    resources "/inns", InnController, only: [:show, :create]
+    resources "/documents", DocumentController, only: [:show, :create]
   end
 
   scope "/", InnCheckerServiceWeb do

@@ -1,7 +1,8 @@
 defmodule InnCheckerServiceWeb.InnChannel do
   use Phoenix.Channel
   alias InnCheckerService.Documents
-  alias InnCheckerServiceWeb.Services.InnChecker
+  alias InnCheckerService.Papers
+  alias InnCheckerServiceWeb.Services.DocumentChecker
 
   def join("inn:checks", %{"params" => %{"token" => token, "client" => client}}, socket) do
     if Phoenix.Token.verify(token, "client auth", client) do
@@ -11,26 +12,31 @@ defmodule InnCheckerServiceWeb.InnChannel do
     end
   end
 
-  def handle_in("new_inn", %{"body" => body, "client" => client, "token" => token}, socket) do
+  def handle_in(
+        "new_document",
+        %{"body" => body, "client" => client, "token" => token, "type" => type},
+        socket
+      ) do
     if Phoenix.Token.verify(token, "client auth", client) do
       case GenServer.call(:ban_server, {:banned?, %{client: client}}) do
         :not_banned ->
-          inn_params = %{number: body, client: client}
+          document_params = %{number: body, client: client, type: type}
 
-          case Documents.create_inn(inn_params) do
-            {:ok, inn} ->
-              Task.async(InnChecker, :check_inn, [inn])
+          case Papers.create_documnet(document_params) do
+            {:ok, document} ->
+              Task.async(DocumentChecker, :check_document, [document])
 
-              broadcast!(socket, "inn_added", %{
+              broadcast!(socket, "document_added", %{
                 body: body,
-                id: inn.id,
-                date: to_string(Timex.shift(inn.inserted_at, hours: 3))
+                type: type,
+                id: document.id,
+                date: to_string(Timex.shift(document.inserted_at, hours: 3))
               })
 
               {:noreply, socket}
 
             {:error, _} ->
-              broadcast!(socket, "inn_error", %{body: "Некорректный формат инн!"})
+              broadcast!(socket, "document_error", %{body: "Некорректный формат документа!"})
               {:noreply, socket}
           end
 
@@ -39,11 +45,11 @@ defmodule InnCheckerServiceWeb.InnChannel do
           {:noreply, socket}
       end
     else
-      {:error, %{reason: "Unauthorized inn check"}}
+      {:error, %{reason: "Unauthorized document check"}}
     end
   end
 
-  def handle_in("new_inn", _body, _socket) do
-    {:error, %{reason: "Unauthorized inn check"}}
+  def handle_in("new_document", _body, _socket) do
+    {:error, %{reason: "Unauthorized document check"}}
   end
 end

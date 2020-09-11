@@ -1,30 +1,30 @@
-defmodule InnCheckerServiceWeb.Api.InnController do
+defmodule InnCheckerServiceWeb.Api.DocumentController do
   use InnCheckerServiceWeb, :controller
   import Ecto.Query, warn: false
-  alias InnCheckerService.Documents
+  alias InnCheckerService.Papers
   alias InnCheckerServiceWeb.Services.IpService
   alias InnCheckerServiceWeb.Services.DocumentChecker
 
   def create(conn, params) do
     Map.put(params, "client", IpService.extract_ip(conn))
 
-    case Documents.create_inn(params) do
-      {:ok, inn} ->
-        checked_inn = DocumentChecker.check_document_api(inn)
+    case Papers.create_document(params) do
+      {:ok, document} ->
+        checked_document = DocumentChecker.check_document_api(document)
 
         conn
         |> put_status(200)
-        |> render("inn.json", inn: checked_inn)
+        |> render("document.json", document: checked_document)
 
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
         |> put_status(422)
-        |> render("inn_error.json", errors: changeset.errors)
+        |> render("document_error.json", errors: changeset.errors)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    inn = Documents.get_inn!(id)
-    render(conn, "inn.json", inn: inn)
+    document = Papers.get_document!(id)
+    render(conn, "document.json", document: document)
   end
 end
