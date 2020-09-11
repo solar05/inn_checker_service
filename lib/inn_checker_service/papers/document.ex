@@ -46,4 +46,9 @@ defmodule InnCheckerService.Papers.Document do
   def is_document_numeric(inn) do
     Regex.match?(~r(^[0-9]+$), inn)
   end
+
+  def prepare_document(number) do
+    String.split(number, "", trim: true)
+    |> Enum.map(fn num -> String.to_integer(num) end)
+  end
 end

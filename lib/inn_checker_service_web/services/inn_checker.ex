@@ -1,4 +1,6 @@
 defmodule InnCheckerServiceWeb.Services.InnChecker do
+  alias InnCheckerService.Papers.Document
+
   @ten_digits_map [2, 4, 10, 3, 5, 9, 4, 6, 8]
   @twelwe_digits_first_map [7, 2, 4, 10, 3, 5, 9, 4, 6, 8]
   @twelwe_digits_second_map [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8]
@@ -13,7 +15,7 @@ defmodule InnCheckerServiceWeb.Services.InnChecker do
   end
 
   def is_control_sum_valid(%{number: number}) do
-    prepared_inn = prepare_inn(number)
+    prepared_inn = Document.prepare_document(number)
 
     case Enum.count(prepared_inn) do
       10 ->
