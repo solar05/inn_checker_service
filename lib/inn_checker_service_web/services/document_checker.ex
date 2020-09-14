@@ -1,6 +1,8 @@
 defmodule InnCheckerServiceWeb.Services.DocumentChecker do
   alias InnCheckerService.Fsm.DocumentFSM
   alias InnCheckerServiceWeb.Endpoint
+  alias InnCheckerServiceWeb.Services.InnChecker
+  alias InnCheckerServiceWeb.Services.SnilsChecker
 
   def check_document(document) do
     result =
@@ -9,7 +11,7 @@ defmodule InnCheckerServiceWeb.Services.DocumentChecker do
           InnCheckerServiceWeb.Services.InnChecker.check_inn(document)
 
         "snils" ->
-          false
+          SnilsChecker.check_snils(document)
 
         _ ->
           false
@@ -28,10 +30,10 @@ defmodule InnCheckerServiceWeb.Services.DocumentChecker do
     result =
       case document.type do
         "inn" ->
-          InnCheckerServiceWeb.Services.InnChecker.check_inn(document)
+          InnChecker.check_inn(document)
 
         "snils" ->
-          false
+          SnilsChecker.check_snils(document)
 
         _ ->
           false

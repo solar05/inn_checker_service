@@ -9,13 +9,17 @@
       <br>
       <table id="documents" role="log" aria-live="polite">
       <%= for inn <- @inns do %>
-      <p><% inn.state %></p>
         <tr class="col-md-10 m-2 h4">
           <td><%=  Enum.join(["[" <> to_string(inn.inserted_at) <> "]", inn.number], " ") %></td>
 
-          <td class="text-primary">
-              <% inn.type %>
-          </td>
+          <%= case inn.type do %>
+            <% "inn" -> %>
+              <%= content_tag :td, "ИНН", [id: Enum.join(["type", inn.id], "-"), class: "text-primary"] %>
+            <% "snils" -> %>
+              <%= content_tag :td, "СНИЛС", [id: Enum.join(["type", inn.id], "-"), class: "text-primary"] %>
+            <% _ -> %>
+              <%= content_tag :td, "Неизвестный тип!", [id: Enum.join(["type", inn.id], "-"), class: "text-primary"] %>
+          <% end %>
 
           <%= case inn.state do %>
             <% "created" -> %>

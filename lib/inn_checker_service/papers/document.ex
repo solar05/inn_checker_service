@@ -33,6 +33,14 @@ defmodule InnCheckerService.Papers.Document do
           add_error(changeset, :number, "Invalid document format!")
         end
 
+      "snils" ->
+        if is_binary(document) and is_snils_length_valid(document) and
+             is_document_numeric(document) do
+          changeset
+        else
+          add_error(changeset, :number, "Invalid document format!")
+        end
+
       _ ->
         add_error(changeset, :type, "Invalid document type!")
     end
@@ -41,6 +49,11 @@ defmodule InnCheckerService.Papers.Document do
   def is_inn_length_valid(document) do
     document_length = String.length(document)
     document_length == 10 or document_length == 12
+  end
+
+  def is_snils_length_valid(document) do
+    document_length = String.length(document)
+    document_length == 11
   end
 
   def is_document_numeric(inn) do

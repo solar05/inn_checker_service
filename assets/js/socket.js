@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   const isSnilsValid = (snils) => {
     const snilsLength = snils.length;
-    return (snilsLength == 13) && documentRegexp.test(snils);
+    return (snilsLength == 11) && documentRegexp.test(snils);
   };
 
   const validationsMap = {
