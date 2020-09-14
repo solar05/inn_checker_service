@@ -12,26 +12,26 @@
       </div>
       <br>
       <table id="documents" role="log" aria-live="polite">
-      <%= for inn <- @inns do %>
+      <%= for document <- @documents do %>
         <tr class="col-md-10 m-2 h4">
-          <td><%=  Enum.join(["[" <> to_string(inn.inserted_at) <> "]", inn.number], " ") %></td>
+          <td><%=  Enum.join(["[" <> to_string(document.inserted_at) <> "]", document.number], " ") %></td>
 
-          <%= case inn.type do %>
+          <%= case document.type do %>
             <% "inn" -> %>
-              <%= content_tag :td, "ИНН", [id: Enum.join(["type", inn.id], "-"), class: "text-primary"] %>
+              <%= content_tag :td, "ИНН", [id: Enum.join(["type", document.id], "-"), class: "text-primary"] %>
             <% "snils" -> %>
-              <%= content_tag :td, "СНИЛС", [id: Enum.join(["type", inn.id], "-"), class: "text-primary"] %>
+              <%= content_tag :td, "СНИЛС", [id: Enum.join(["type", document.id], "-"), class: "text-primary"] %>
             <% _ -> %>
-              <%= content_tag :td, "Неизвестный тип!", [id: Enum.join(["type", inn.id], "-"), class: "text-primary"] %>
+              <%= content_tag :td, "Неизвестный тип!", [id: Enum.join(["type", document.id], "-"), class: "text-primary"] %>
           <% end %>
 
-          <%= case inn.state do %>
+          <%= case document.state do %>
             <% "created" -> %>
-              <%= content_tag :td, "отправлен", [id: Enum.join(["state", inn.id], "-"), class: "text-primary"] %>
+              <%= content_tag :td, "отправлен", [id: Enum.join(["state", document.id], "-"), class: "text-primary"] %>
             <% "correct" -> %>
-              <%= content_tag :td, "корректен", [id: Enum.join(["state", inn.id], "-"), class: "text-success"] %>
+              <%= content_tag :td, "корректен", [id: Enum.join(["state", document.id], "-"), class: "text-success"] %>
             <% _ -> %>
-              <%= content_tag :td, "некорректен", [id: Enum.join(["state", inn.id], "-"), class: "text-danger"] %>
+              <%= content_tag :td, "некорректен", [id: Enum.join(["state", document.id], "-"), class: "text-danger"] %>
           <% end %>
         </tr>
       <% end %>

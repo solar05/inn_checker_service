@@ -22,7 +22,7 @@ defmodule InnCheckerServiceWeb.SessionController do
       {:ok, account} ->
         conn
         |> Authentication.log_in(account)
-        |> redirect(to: Routes.inn_path(conn, :index))
+        |> redirect(to: Routes.document_path(conn, :index))
 
       {:error, :invalid_credentials} ->
         conn

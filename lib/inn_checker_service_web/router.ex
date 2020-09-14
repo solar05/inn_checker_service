@@ -36,7 +36,6 @@ defmodule InnCheckerServiceWeb.Router do
     get "/about", PageController, :about
     get "/login", SessionController, :new
     post "/login", SessionController, :create
-    resources "/inns", InnController, only: [:new]
     resources "/documents", DocumentController, only: [:new]
   end
 
@@ -46,7 +45,6 @@ defmodule InnCheckerServiceWeb.Router do
     post "/users/:client", UserController, :delete
     resources "/users", UserController, only: [:index]
     delete "/logout", SessionController, :delete
-    resources "/inns", InnController, only: [:index, :show, :delete]
     resources "/documents", DocumentController, only: [:index, :show, :delete]
   end
 

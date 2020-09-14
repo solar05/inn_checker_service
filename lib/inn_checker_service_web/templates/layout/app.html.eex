@@ -34,16 +34,16 @@
     <header>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <ul class="navbar-nav mr-auto">
-                  <%= link("Проверка документов", to: Routes.inn_path(@conn, :new), class: "navbar-brand navbar-text text-dark h1") %>
+                  <%= link("Проверка документов", to: Routes.document_path(@conn, :new), class: "navbar-brand navbar-text text-dark h1") %>
                   <%= if logged?(@conn) do %>
                       <%= if current_user(@conn) |> can?("index_users") do %>
                         <li class="nav-item">
                           <%= link("Пользователи", to: Routes.user_path(@conn, :index), class: "navbar-brand navbar-text text-dark h1") %>
                         </li>
                       <% end %>
-                      <%= if current_user(@conn) |> can?("index_inn") do %>
+                      <%= if current_user(@conn) |> can?("index_3Egt5EPGS") do %>
                         <li class="nav-item">
-                          <%= link("Все документы", to: Routes.inn_path(@conn, :index), class: "navbar-brand navbar-text text-dark h1") %>
+                          <%= link("Все документы", to: Routes.document_path(@conn, :index), class: "navbar-brand navbar-text text-dark h1") %>
                         </li>
                       <% end %>
                     <% end %>

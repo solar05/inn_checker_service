@@ -1,13 +1,13 @@
-<h2>ИНН  №<%= @inn.id %></h1>
+<h2>Документ  №<%= @document.id %></h1>
 
 <ul class="list-group">
     <%= if current_user(@conn) |> can?("ban_users") do %>
         <li class="list-group-item">
             <strong>Пользователь</strong>
-            <%= @inn.client %>
+            <%= @document.client %>
         </li>
         <li class="list-group-item">
-        <%= form_for @conn, Routes.user_path(@conn, :delete, @inn.client), [class: "form-inline m-1"], fn f -> %>
+        <%= form_for @conn, Routes.user_path(@conn, :delete, @document.client), [class: "form-inline m-1"], fn f -> %>
               <%= text_input f, :minutes, [class: "form-control m-1", placeholder: "Количество минут", id: "timeout-input"] %>
                 <%= submit "Заблокировать  пользователя", [class: "btn btn-danger m-1", id: "timeout-button"] %>
           <% end %>
@@ -16,11 +16,25 @@
 
     <li class="list-group-item">
         <strong>Номер:</strong>
-        <%= @inn.number %>
+        <%= @document.number %>
     </li>
+
+    <li class="list-group-item">
+        <strong>Тип документа:</strong>
+          <%= case @document.type do %>
+            <% "inn" -> %>
+              "ИНН"
+            <% "snils" -> %>
+              "СНИЛС"
+            <% _ -> %>
+              "Неизвестный тип!"
+          <% end %>
+    </li>
+
+
     <li class="list-group-item">
       <strong>Статус проверки: </strong>
-        <%= case @inn.state do %>
+        <%= case @document.state do %>
           <% "created" -> %>
             <%= content_tag :label, "отправлен", class: "text-primary" %>
           <% "correct" -> %>
@@ -30,14 +44,14 @@
         <% end %>
     </li>
     <li class="list-group-item"><strong>Дата отправки</strong>
-      <%=  to_string(Timex.shift(@inn.inserted_at, hours: 3)) %>
+      <%=  to_string(Timex.shift(@document.inserted_at, hours: 3)) %>
     </li>
     <li class="list-group-item"><strong>Дата проверки</strong>
-      <%=  to_string(Timex.shift(@inn.updated_at, hours: 3)) %>
+      <%=  to_string(Timex.shift(@document.updated_at, hours: 3)) %>
     </li>
-    <%= if current_user(@conn) |> can?("delete_inn") do %>
+    <%= if current_user(@conn) |> can?("delete_document") do %>
         <li class="list-group-item">
-             <%= link("Удалить ИНН", to: Routes.inn_path(@conn, :delete, @inn), method: :delete, data: [confirm: "Удалить ИНН?"], class: "btn btn-danger h1") %>
+             <%= link("Удалить ИНН", to: Routes.document_path(@conn, :delete, @document), method: :delete, data: [confirm: "Удалить документ?"], class: "btn btn-danger h1") %>
         </li>
     <% end %>
 </ul>
