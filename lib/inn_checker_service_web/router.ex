@@ -37,6 +37,7 @@ defmodule InnCheckerServiceWeb.Router do
     get "/login", SessionController, :new
     post "/login", SessionController, :create
     resources "/inns", InnController, only: [:new]
+    resources "/documents", DocumentController, only: [:new]
   end
 
   scope "/admin", InnCheckerServiceWeb do
@@ -46,6 +47,7 @@ defmodule InnCheckerServiceWeb.Router do
     resources "/users", UserController, only: [:index]
     delete "/logout", SessionController, :delete
     resources "/inns", InnController, only: [:index, :show, :delete]
+    resources "/documents", DocumentController, only: [:index, :show, :delete]
   end
 
   # Other scopes may use custom stacks.
