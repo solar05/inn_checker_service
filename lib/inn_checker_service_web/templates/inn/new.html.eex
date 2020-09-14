@@ -1,12 +1,12 @@
 
 <h1 class="m-2">Введите номер документа</h1>
-      <div class="m-1 form-group">
-        <input class="col-md-10 m-2 h6" id="document-input" type="text">
-        <button id="document-button" type="button" onclick="window.sendData()" class="m-2 btn btn-primary">Отправить</button>
-        <select class="form-control" id="document-type">
+      <div class="m-1 form-group form-inline">
+        <input class="col-md-8 m-2 h6 form-control" id="document-input" type="text">
+        <select class="form-control m-2 col-md-2 h-10" id="document-type">
           <option value="inn" selected>ИНН</option>
           <option value="snils">СНИЛС</option>
         </select>
+        <button id="document-button form-control" type="button" onclick="window.sendData()" class="m-2 btn btn-primary">Отправить</button>
         <h2 id="error-tag" class="m-2 text-danger" hidden>Неправильный формат документа</h2>
         <h2 id="ban-tag" class="m-2 text-danger" hidden>Вы превысили количество допустимых проверок, попробуйте позже</h2>
       </div>
