@@ -8,7 +8,8 @@
 use Mix.Config
 
 config :inn_checker_service,
-  ecto_repos: [InnCheckerService.Repo]
+  ecto_repos: [InnCheckerService.Repo],
+  env: Mix.env()
 
 # Configures the endpoint
 config :inn_checker_service, InnCheckerServiceWeb.Endpoint,
