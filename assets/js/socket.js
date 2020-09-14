@@ -56,22 +56,25 @@ socket.connect()
 
 // Now that you are connected, you can join channels with a topic:
 document.addEventListener("DOMContentLoaded", function(event) {
-  const channel = socket.channel("inn:checks", {params: {token: window.userToken, client: window.client}});
-  const innInput = document.querySelector("#inn-input");
-  const sendButton = document.getElementById("inn-button");
-  const innContainer = document.querySelector("#inns");
+  const channel = socket.channel("document:checks", {params: {token: window.userToken, client: window.client}});
+  const documentInput = document.querySelector("#document-input");
+  const documentType = document.querySelector("#document-type");
+  const sendButton = document.getElementById("document-button");
+  const documentContainer = document.querySelector("#documents");
   const errorTag = document.getElementById("error-tag");
   const banTag = document.getElementById("ban-tag");
-  const innRegexp = /^[0-9]+$/;
+  const documentRegexp = /^[0-9]+$/;
   var sendTime, recieveTime, checkTime;
 
-  innInput.addEventListener("keypress", event => {
+  documentInput.addEventListener("keypress", event => {
     if (event.key === 'Enter'){
-      if (isInnValid(innInput.value)) {
+      const docNumber = documentInput.value;
+      const docType = documentType.value;
+      if (isDocumentTypeCorrect(docType) && validationsMap[docType](docNumber)) {
         showInputError(false);
         sendTime = new Date().getTime();
-        channel.push("new_inn", {body: innInput.value, client: window.client, token: window.userToken})
-        innInput.value = ""
+        channel.push("new_document", {body: docNumber, client: window.client, token: window.userToken, type: docType})
+        documentInput.value = ""
       } else {
         showInputError(true);
       }
@@ -79,11 +82,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
   })
 
   const sendData = () => {
-    if (isInnValid(innInput.value)) {
+    const docNumber = documentInput.value;
+    const docType = documentType.value;
+    if (isDocumentTypeCorrect(docType) && validationsMap[docType](docNumber)) {
       showInputError(false);
       sendTime = new Date().getTime();
-      channel.push("new_inn", {body: innInput.value, client: window.client, token: window.userToken})
-      innInput.value = ""
+      channel.push("new_document", {body: documentInput.value, client: window.client, token: window.userToken, type: docType})
+      documentInput.value = ""
     } else {
         showInputError(true);
     }
@@ -92,40 +97,46 @@ document.addEventListener("DOMContentLoaded", function(event) {
   window.sendData = sendData;
 
 
-  channel.on("inn_added", payload => {
+  channel.on("document_added", payload => {
     recieveTime = new Date().getTime();
     caclAndDisplayTimeAfterSend();
-    const innItem = document.createElement("td");
+    const documentItem = document.createElement("td");
     const stateItem = document.createElement("td");
+    const typeItem = document.createElement("td");
     stateItem.innerText = "отправлен";
     stateItem.setAttribute("class", "text-primary");
+    typeItem.innerText = translateMap[payload.type];
+    typeItem.setAttribute("class", "text-primary");
     const trElem = document.createElement("tr");
     trElem.setAttribute("class", "col-md-10 m-2 h4");
     trElem.setAttribute("id", payload.id);
     stateItem.setAttribute("id", `state-${payload.id}`);
-    innItem.innerText = `[${payload.date}] ${payload.body}`;
-    trElem.prepend(innItem);
+    documentItem.innerText = `[${payload.date}] ${payload.body}`;
+    trElem.prepend(documentItem);
+    trElem.appendChild(typeItem);
     trElem.appendChild(stateItem);
-    innContainer.prepend(trElem);
+    documentContainer.prepend(trElem);
   })
   
   
-  channel.on("inn_error", payload => {
-    const innItem = document.createElement("td");
+  channel.on("document_error", payload => {
+    const documentItem = document.createElement("td");
     const stateItem = document.createElement("td");
+    const typeItem = document.createElement("td");
     stateItem.innerText = "некорректен";
     stateItem.setAttribute("class", "text-primary");
+    typeItem.innerText = translateMap[payload.type];
     const trElem = document.createElement("tr");
     trElem.setAttribute("class", "col-md-10 m-2 h4");
     trElem.setAttribute("id", payload.id);
     stateItem.setAttribute("id", `state-${payload.id}`);
-    innItem.innerText = `[${payload.date}] ${payload.body}`;
-    trElem.prepend(innItem);
+    documentItem.innerText = `[${payload.date}] ${payload.body}`;
+    trElem.prepend(documentItem);
     trElem.appendChild(stateItem);
-    innContainer.prepend(trElem);
+    documentContainer.prepend(trElem);
   })
 
-  channel.on("inn_correct", payload => {
+  channel.on("document_correct", payload => {
     checkTime = new Date().getTime();
     caclAndDisplayTimeOfCheck();
     const stateItem = document.getElementById(`state-${payload.id}`);
@@ -133,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     stateItem.textContent = "корректен"
   })
 
-  channel.on("inn_incorrect", payload => {
+  channel.on("document_incorrect", payload => {
     checkTime = new Date().getTime();
     caclAndDisplayTimeOfCheck();
     const stateItem = document.getElementById(`state-${payload.id}`);
@@ -143,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   channel.on("user_banned", payload => {
     showBanTag(true);
-    innInput.setAttribute("disabled", "true");
+    documentInput.setAttribute("disabled", "true");
     sendButton.setAttribute("disabled", "true");
   })
 
@@ -153,7 +164,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   const isInnValid = (inn) => {
     const innLength = inn.length;
-    return (innLength == 10 || innLength == 12) && innRegexp.test(inn);
+    return (innLength == 10 || innLength == 12) && documentRegexp.test(inn);
+  };
+
+  const isSnilsValid = (snils) => {
+    const snilsLength = snils.length;
+    return (snilsLength == 13) && documentRegexp.test(snils);
+  };
+
+  const validationsMap = {
+    "inn": isInnValid,
+    "snils": isSnilsValid
+  };
+
+  const translateMap = {
+    "inn": "ИНН",
+    "snils": "СНИЛС"
+  };
+
+  const isDocumentTypeCorrect = (type) => {
+    const types = ["inn", "snils"];
+    return types.includes(type);
   };
 
   const showInputError = (state) => {

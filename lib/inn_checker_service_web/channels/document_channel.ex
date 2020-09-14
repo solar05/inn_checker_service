@@ -1,10 +1,10 @@
-defmodule InnCheckerServiceWeb.InnChannel do
+defmodule InnCheckerServiceWeb.DocumentChannel do
   use Phoenix.Channel
   alias InnCheckerService.Documents
   alias InnCheckerService.Papers
   alias InnCheckerServiceWeb.Services.DocumentChecker
 
-  def join("inn:checks", %{"params" => %{"token" => token, "client" => client}}, socket) do
+  def join("document:checks", %{"params" => %{"token" => token, "client" => client}}, socket) do
     if Phoenix.Token.verify(token, "client auth", client) do
       {:ok, socket}
     else
@@ -22,7 +22,7 @@ defmodule InnCheckerServiceWeb.InnChannel do
         :not_banned ->
           document_params = %{number: body, client: client, type: type}
 
-          case Papers.create_documnet(document_params) do
+          case Papers.create_document(document_params) do
             {:ok, document} ->
               Task.async(DocumentChecker, :check_document, [document])
 

@@ -1,7 +1,7 @@
 defmodule InnCheckerServiceWeb.UserSocket do
   use Phoenix.Socket
 
-  channel "inn:*", InnCheckerServiceWeb.InnChannel
+  channel "document:*", InnCheckerServiceWeb.DocumentChannel
 
   @impl true
   def connect(params, socket, _connect_info) do

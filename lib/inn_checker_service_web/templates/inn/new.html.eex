@@ -1,18 +1,26 @@
 
-<h1 class="m-2">Введите ИНН</h1>
-      <div class="m-1">
-        <input class="col-md-10 m-2 h6" id="inn-input" type="text">
-        <button id="inn-button" type="button" onclick="window.sendData()" class="m-2 btn btn-primary">Отправить</button>
-        <h2 id="error-tag" class="m-2 text-danger" hidden>Неправильный формат ИНН</h2>
+<h1 class="m-2">Введите номер документа</h1>
+      <div class="m-1 form-group">
+        <input class="col-md-10 m-2 h6" id="document-input" type="text">
+        <button id="document-button" type="button" onclick="window.sendData()" class="m-2 btn btn-primary">Отправить</button>
+        <select class="form-control" id="document-type">
+          <option value="inn" selected>ИНН</option>
+          <option value="snils">СНИЛС</option>
+        </select>
+        <h2 id="error-tag" class="m-2 text-danger" hidden>Неправильный формат документа</h2>
         <h2 id="ban-tag" class="m-2 text-danger" hidden>Вы превысили количество допустимых проверок, попробуйте позже</h2>
       </div>
       <br>
-      <table id="inns" role="log" aria-live="polite">
+      <table id="documents" role="log" aria-live="polite">
       <%= for inn <- @inns do %>
       <p><% inn.state %></p>
         <tr class="col-md-10 m-2 h4">
           <td>
               <%=  Enum.join(["[" <> to_string(Timex.shift(inn.inserted_at, hours: 3)) <> "]", inn.number], " ") %>
+          </td>
+
+          <td class="text-primary">
+              <% inn.type %>
           </td>
 
           <%= case inn.state do %>

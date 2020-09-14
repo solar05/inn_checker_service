@@ -1,14 +1,14 @@
 defmodule InnCheckerServiceWeb.InnController do
   use InnCheckerServiceWeb, :controller
   import Ecto.Query, warn: false
-  alias InnCheckerService.Documents
+  alias InnCheckerService.Papers.Document
   alias InnCheckerService.Documents.Inn
   alias InnCheckerServiceWeb.Services.IpService
   alias InnCheckerService.Repo
 
   def index(conn, params) do
     page =
-      Inn
+      Document
       |> order_by(desc: :inserted_at)
       |> Repo.paginate(params)
 
@@ -17,7 +17,7 @@ defmodule InnCheckerServiceWeb.InnController do
 
   def new(conn, params) do
     page =
-      Inn
+      Document
       |> order_by(desc: :inserted_at)
       |> Repo.paginate(params)
 
