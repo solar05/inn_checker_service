@@ -10,6 +10,8 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  GUARDIAN_SECRET_KEY: ${{ secrets.GUARDIAN_SECRET_KEY }}
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 
 jobs:
@@ -27,7 +29,6 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: pipsqueak_test
-          GUARDIAN_SECRET_KEY: ${{ secrets.GUARDIAN_SECRET_KEY }}
         ports: ['5432:5432']
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
