@@ -14,13 +14,15 @@ defmodule InnCheckerServiceWeb.UserControllerTest do
 
   describe "Login user" do
     test "Login as admin", %{conn: conn} do
-      conn = post(conn, "/login", @admin)
-      assert redirected_to(conn) == "/admin/documents"
+      response = post(conn, "/login", @admin)
+      assert response.status == 302
+      assert redirected_to(response) == "/admin/documents"
     end
 
     test "Login as operator", %{conn: conn} do
-      conn = post(conn, "/login", @operator)
-      assert redirected_to(conn) == "/admin/documents"
+      response = post(conn, "/login", @operator)
+      assert response.status == 302
+      assert redirected_to(response) == "/admin/documents"
     end
   end
 end
