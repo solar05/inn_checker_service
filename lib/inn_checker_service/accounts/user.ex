@@ -9,7 +9,8 @@ defmodule InnCheckerService.Accounts.User do
     "index_users",
     "ban_users",
     "unban_users",
-    "index_documents"
+    "index_documents",
+    "index_statistics"
   ]
 
   schema "users" do

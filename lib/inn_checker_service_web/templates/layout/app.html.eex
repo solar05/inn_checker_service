@@ -46,6 +46,11 @@
                           <%= link("Все документы", to: Routes.document_path(@conn, :index), class: "navbar-brand navbar-text text-dark h1") %>
                         </li>
                       <% end %>
+                      <%= if current_user(@conn) |> can?("index_statistics") do %>
+                        <li class="nav-item">
+                          <%= link("Статистика", to: "/admin/dashboard", class: "navbar-brand navbar-text text-dark h1") %>
+                        </li>
+                      <% end %>
                     <% end %>
                 </ul>
                 <span class="navbar-text">
