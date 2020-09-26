@@ -20,7 +20,7 @@ defmodule InnCheckerServiceWeb.BanServerTest do
     result
   end
 
-  test "Server starting", %{conn: conn} do
+  test "Server starting" do
     assert {:ok, _pid} = GenServer.start_link(BanServer, MapSet.new([]))
   end
 

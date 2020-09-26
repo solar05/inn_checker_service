@@ -4,7 +4,6 @@ defmodule InnCheckerServiceWeb.DocumentControllerTest do
   alias InnCheckerService.Papers
 
   @ten_digit_valid_inn "7743013901"
-  @valid_snils "34380710664"
 
   @create_attrs %{
     client: "some client",

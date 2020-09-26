@@ -10,4 +10,9 @@ defmodule InnCheckerServiceWeb.DocumentAcessTest do
     visit(session, "/admin/users")
     assert current_path(session) == "/login"
   end
+
+  test "Accessing a dashboard without logging in", %{session: session} do
+    visit(session, "/admin/dashboard")
+    assert current_path(session) == "/login"
+  end
 end

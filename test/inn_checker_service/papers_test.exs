@@ -3,9 +3,6 @@ defmodule InnCheckerService.PapersTest do
   alias InnCheckerService.Papers
 
   @ten_digit_valid_inn "7743013901"
-  @ten_digit_invalid_inn "7743013902"
-  @twelwe_digit_valid_inn "732897853530"
-  @twelwe_digit_invalid_inn "732897853531"
 
   describe "documents" do
     alias InnCheckerService.Papers.Document
