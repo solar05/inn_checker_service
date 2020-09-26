@@ -1,5 +1,6 @@
 defmodule InnCheckerServiceWeb.Router do
   use InnCheckerServiceWeb, :router
+  import Phoenix.LiveDashboard.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -27,7 +28,8 @@ defmodule InnCheckerServiceWeb.Router do
 
   scope "/api", InnCheckerServiceWeb.Api, as: :api do
     pipe_through :api
-    resources "/documents", DocumentController, only: [:show, :create]
+    resources "/documents", DocumentController, only: [:create]
+    get "/documents/:type/:number", DocumentController, :show
   end
 
   scope "/", InnCheckerServiceWeb do
@@ -43,6 +45,7 @@ defmodule InnCheckerServiceWeb.Router do
     pipe_through [:browser, :token, :guardian, :browser_auth]
     get "/users/:client", UserController, :create
     post "/users/:client", UserController, :delete
+    live_dashboard "/dashboard", metrics: InnCheckerServiceWeb.Telemetry
     resources "/users", UserController, only: [:index]
     delete "/logout", SessionController, :delete
     resources "/documents", DocumentController, only: [:index, :show, :delete]
@@ -60,12 +63,12 @@ defmodule InnCheckerServiceWeb.Router do
   # If your application does not have an admins-only section yet,
   # you can use Plug.BasicAuth to set up some basic authentication
   # as long as you are also using SSL (which you should anyway).
-  if Mix.env() in [:dev, :test] do
-    import Phoenix.LiveDashboard.Router
+  #if Mix.env() in [:dev, :test] do
 
-    scope "/" do
-      pipe_through :browser
-      live_dashboard "/dashboard", metrics: InnCheckerServiceWeb.Telemetry
-    end
-  end
+
+  #  scope "/" do
+  #    pipe_through :browser
+  #    live_dashboard "/dashboard", metrics: InnCheckerServiceWeb.Telemetry
+  #  end
+  #end
 end

@@ -37,6 +37,15 @@ defmodule InnCheckerService.Papers do
   """
   def get_document!(id), do: Repo.get!(Document, id)
 
+  def get_document!(number, type) do
+    query =
+      from d in Document,
+        where: d.number == ^number and d.type == ^type,
+        limit: 1
+
+    Repo.all(query)
+  end
+
   @doc """
   Creates a document.
 

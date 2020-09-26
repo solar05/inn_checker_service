@@ -51,7 +51,7 @@ defmodule InnCheckerServiceWeb.Api.DocumentControllerTest do
     setup [:create_document]
 
     test "Show chosen document", %{conn: conn, document: document} do
-      conn = get(conn, Routes.api_document_path(conn, :show, document))
+      conn = get(conn, "/api/documents/#{document.type}/#{document.number}")
       assert json_response(conn, 200)
     end
   end

@@ -3,7 +3,6 @@ defmodule InnCheckerServiceWeb.Api.DocumentView do
 
   def render("document.json", %{document: document}) do
     %{
-      id: document.id,
       number: document.number,
       type: document.type,
       check_date: to_string(Timex.shift(document.updated_at, hours: 3)),
@@ -19,5 +18,9 @@ defmodule InnCheckerServiceWeb.Api.DocumentView do
       [type: {msg, _}] ->
         %{errors: msg}
     end
+  end
+
+  def render("user_banned.json", _) do
+    %{errors: "You have exceeded number of allowed checks, please try again later"}
   end
 end

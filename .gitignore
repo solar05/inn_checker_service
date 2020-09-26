@@ -35,3 +35,4 @@ npm-debug.log
 
 
 *.DS_S*
+.elixir_ls

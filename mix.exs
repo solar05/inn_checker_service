@@ -20,7 +20,7 @@ defmodule InnCheckerService.MixProject do
   def application do
     [
       mod: {InnCheckerService.Application, []},
-      extra_applications: [:logger, :runtime_tools, :formex]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
@@ -48,10 +48,7 @@ defmodule InnCheckerService.MixProject do
       {:guardian, "~> 2.0"},
       {:bodyguard, "~> 2.4"},
       {:machinery, "~> 1.0.0"},
-      {:formex, "~> 0.6.0"},
-      {:formex_vex, "~> 0.1.0"},
       {:argon2_elixir, "~> 2.3"},
-      {:redix, ">= 0.0.0"},
       {:castore, ">= 0.0.0"},
       {:timex, "~> 3.0"},
       {:wallaby, "~> 0.26.0", runtime: false, only: :test},

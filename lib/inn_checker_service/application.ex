@@ -13,7 +13,6 @@ defmodule InnCheckerService.Application do
       InnCheckerServiceWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: InnCheckerService.PubSub},
-      {Redix, name: :redix},
       {InnCheckerServiceWeb.Services.BanServer, name: :ban_server, strategy: :one_for_one},
       # Start the Endpoint (http/https)
       InnCheckerServiceWeb.Endpoint

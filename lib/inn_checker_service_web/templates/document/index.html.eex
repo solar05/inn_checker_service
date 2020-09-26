@@ -5,7 +5,7 @@
       <p><% document.state %></p>
         <tr class="col-md-10 m-2 h4">
           <td>
-            <%= if current_user(@conn) |> can?("index_document") do %>
+            <%= if current_user(@conn) |> can?("index_documents") do %>
               <%= link(
                 Enum.join(["[" <> to_string(Timex.shift(document.inserted_at, hours: 3)) <> "]", document.number], " "),
                 to: Routes.document_path(@conn, :show, document), class: "") %>

@@ -41,7 +41,7 @@
                           <%= link("Пользователи", to: Routes.user_path(@conn, :index), class: "navbar-brand navbar-text text-dark h1") %>
                         </li>
                       <% end %>
-                      <%= if current_user(@conn) |> can?("index_3Egt5EPGS") do %>
+                      <%= if current_user(@conn) |> can?("index_documents") do %>
                         <li class="nav-item">
                           <%= link("Все документы", to: Routes.document_path(@conn, :index), class: "navbar-brand navbar-text text-dark h1") %>
                         </li>

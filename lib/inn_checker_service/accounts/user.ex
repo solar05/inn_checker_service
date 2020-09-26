@@ -2,14 +2,14 @@ defmodule InnCheckerService.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @operator_actions ["show_document", "delete_document", "index_document"]
+  @operator_actions ["show_document", "delete_document", "index_documents"]
   @admin_actions [
     "show_document",
     "delete_document",
     "index_users",
     "ban_users",
     "unban_users",
-    "index_document"
+    "index_documents"
   ]
 
   schema "users" do
