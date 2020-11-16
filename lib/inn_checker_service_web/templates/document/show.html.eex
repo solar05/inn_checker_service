@@ -50,8 +50,15 @@
       <%=  to_string(Timex.shift(@document.updated_at, hours: 3)) %>
     </li>
     <%= if current_user(@conn) |> can?("delete_document") do %>
-        <li class="list-group-item">
-             <%= link("Удалить ИНН", to: Routes.document_path(@conn, :delete, @document), method: :delete, data: [confirm: "Удалить документ?"], class: "btn btn-danger h1") %>
+      <li class="list-group-item">
+        <%= case @document.type do %>
+            <% "inn" -> %>
+              <%= link("Удалить ИНН", to: Routes.document_path(@conn, :delete, @document), method: :delete, data: [confirm: "Удалить документ?"], class: "btn btn-danger h1") %>
+            <% "snils" -> %>
+              <%= link("Удалить СНИЛС", to: Routes.document_path(@conn, :delete, @document), method: :delete, data: [confirm: "Удалить документ?"], class: "btn btn-danger h1") %>
+            <% _ -> %>
+              "Неизвестный тип документа!"
+          <% end %>
         </li>
     <% end %>
 </ul>
